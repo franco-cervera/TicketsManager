@@ -2,15 +2,13 @@
     <!--CREDENCIALES APLICATIVO-->
     <string name="app_name">Tickets Manager</string>
     <string name="developer">Franco Cervera</string>
-    <string name="desarrollo">Desarrollado por</string>
+    <string name="desarrollo">Desarrollado por:</string>
     <string name="version">Version 1.0.0</string>
 
     <!--MAIN-->
     <string name="btn_administrador">Administrador</string>
     <string name="btn_tecnico">Técnico</string>
     <string name="btn_trabajador">Trabajador</string>
-
-
 
 
     <!--LOGIN-->
@@ -20,11 +18,18 @@
     <string name="lbl_password">Contraseña</string>
     <string name="txt_password">Ingrese contraseña</string>
     <string name="btn_ingresar">Ingresar</string>
+    <string name="btn_registrar_usuario">Registrar</string>
     <string name="lbl_crear_cuenta">No tenés cuenta?, Registrate</string>
 
-
-
     <!--REGISTRO-->
+    <string name="lbl_usuario_registro">Usuario</string>
+    <string name="txt_usuario_registro">Ingrese usuario</string>
+    <string name="lbl_password_registro">Contraseña</string>
+    <string name="txt_password_registro">Ingrese contraseña</string>
+    <string name="lbl_tipo_usuario">Tipo de Usuario</string>
+    <string name="txt_tipo_usuario">Ingrese Tipo de Usuario</string>
+    <string name="btn_registrar">Registrar</string>
+
 
     <!--SELECCION-->
 

@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText edtID, edtPassword;
     private Button btnLogin;
     private String userType;
+    private Button btnRegistro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +54,14 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = (TextInputEditText) inputLayoutPassword.getEditText(); // Obtiene el TextInputEditText del TextInputLayout
 
         btnLogin = findViewById(R.id.btnLogin);
+        btnRegistro = findViewById(R.id.btnRegistro);
 
         btnLogin.setOnClickListener(v -> validarUsuario(edtID, edtPassword));
+        btnRegistro.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegistroActivity.class);
+            intent.putExtra("userType", "Administrador");
+            startActivity(intent);
+        });
     }
 
     private void validarUsuario(TextInputEditText edtID, TextInputEditText edtPassword) {

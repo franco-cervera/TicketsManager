@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back_registro"
+    tools:context=".controller.RegistroActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="31dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="31dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/logo_register"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_usuario_registro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/lbl_usuario"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edtID_registro"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView_usuario_registro">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/txt_usuario"
+            android:textColorHint="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView_password_registro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/lbl_password"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/edtID_registro" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edtPassword_registro"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView_password_registro"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/txt_password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView_tipoUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/lbl_tipo_usuario"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword_registro" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edtTipoUsuario"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView_tipoUsuario">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/txt_tipo_usuario"
+            android:textColorHint="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnRegistro_registro"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/btn_registrar"
+        android:textSize="23dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/edtTipoUsuario" />
+</androidx.constraintlayout.widget.ConstraintLayout>

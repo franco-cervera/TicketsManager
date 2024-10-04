@@ -1,5 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,49 +7,62 @@
 
     <Button
         android:id="@+id/btnTrabajador"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="80dp"
         android:layout_marginTop="108dp"
         android:text="@string/btn_trabajador"
         android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.737"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnTecnico"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:text="@string/btn_tecnico"
         android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.737"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/btnTrabajador" />
 
     <Button
         android:id="@+id/btnAdministrador"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="80dp"
         android:layout_marginTop="12dp"
         android:text="@string/btn_administrador"
         android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.737"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/btnTecnico" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="250dp"
         android:layout_height="160dp"
-        android:layout_marginTop="104dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.596"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="144dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/btnAdministrador"
         app:srcCompat="@drawable/ticket_main" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="31dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="30dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
