@@ -111,31 +111,27 @@
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/edtPassword_registro" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtTipoUsuario"
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/white"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/spinner_background"
+        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/textView_tipoUsuario">
+        app:layout_constraintTop_toBottomOf="@+id/textView_tipoUsuario" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/txt_tipo_usuario"
-            android:textColorHint="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnRegistro_registro"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="32dp"
         android:text="@string/btn_registrar"
         android:textSize="23dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/edtTipoUsuario" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

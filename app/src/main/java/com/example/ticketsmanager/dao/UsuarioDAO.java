@@ -23,13 +23,16 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
     public void crear(Usuario usuario) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("id", usuario.getId());
+        values.put("nombreUsuario", usuario.getNombreUsuario());
         values.put("contrasena", usuario.getContrasena());
         values.put("tipo", usuario.getTipo());
 
-        db.insert("usuarios", null, values);
+        long id = db.insert("usuarios", null, values);
+        usuario.setId((int) id); // Establece el ID generado en el objeto Usuario
+
         db.close();
     }
+
 
     @Override
     public Usuario listar(Integer id) {
@@ -40,6 +43,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         if (cursor != null && cursor.moveToFirst()) {
             Usuario usuario = new Usuario(
                     cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), // Obtener nombre de usuario
                     cursor.getString(cursor.getColumnIndexOrThrow("contrasena")),
                     cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
             );
@@ -81,6 +85,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             do {
                 Usuario usuario = new Usuario(
                         cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), // Obtener nombre de usuario
                         cursor.getString(cursor.getColumnIndexOrThrow("contrasena")),
                         cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
                 );
@@ -92,4 +97,38 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         db.close();
         return usuarios;
     }
+
+    public Usuario listarPorTipo(String tipo) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM usuarios WHERE tipo = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{tipo});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            Usuario usuario = new Usuario(
+                    cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("contrasena")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+            );
+            cursor.close();
+            db.close();
+            return usuario;
+        }
+        cursor.close();
+        db.close();
+        return null; // Si no existe, retornar null
+    }
+
+    public boolean validarCredenciales(String nombreUsuario, String contrasena) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ? AND contrasena = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario, contrasena});
+
+        boolean existe = cursor.moveToFirst(); // true si existe, false si no
+        cursor.close();
+        db.close();
+        return existe;
+    }
+
+
 }

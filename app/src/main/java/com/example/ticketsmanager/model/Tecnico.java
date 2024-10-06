@@ -4,8 +4,8 @@ public class Tecnico extends Usuario {
     private int fallas;
     private int ticketsAtendidos;
 
-    public Tecnico(int id, String contrasena) {
-        super(id, contrasena, "tecnico");
+    public Tecnico(int id, String nombreUsuario, String contrasena) {
+        super(id, nombreUsuario, contrasena, "tecnico");
         this.fallas = 0;
         this.ticketsAtendidos = 0;
     }

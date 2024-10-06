@@ -19,7 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Crear tabla de usuarios
         String createUsuariosTable = "CREATE TABLE usuarios (" +
-                "id INTEGER PRIMARY KEY," +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombreUsuario TEXT NOT NULL," +
                 "contrasena TEXT NOT NULL," +
                 "tipo TEXT NOT NULL" +
                 ");";

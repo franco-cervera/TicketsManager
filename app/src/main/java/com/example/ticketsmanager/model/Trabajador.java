@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Trabajador extends Usuario {
 
-    public Trabajador(int id, String contrasena) {
-        super(id, contrasena, "trabajador");
+    public Trabajador(int id, String nombreUsuario, String contrasena) {
+        super(id, nombreUsuario, contrasena, "trabajador");
     }
 
     // Método para crear un ticket

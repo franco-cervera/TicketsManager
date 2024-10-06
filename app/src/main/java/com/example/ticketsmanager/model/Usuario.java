@@ -2,12 +2,21 @@ package com.example.ticketsmanager.model;
 
 public class Usuario {
     protected int id;
+    protected String nombreUsuario; // Nuevo campo
     protected String contrasena;
     protected String tipo; // Puede ser "trabajador", "tecnico" o "administrador"
 
-    // Constructor
-    public Usuario(int id, String contrasena, String tipo) {
+    // Constructor sin ID
+    public Usuario(String nombreUsuario, String contrasena, String tipo) {
+        this.nombreUsuario = nombreUsuario; // Inicializa el nombre de usuario
+        this.contrasena = contrasena;
+        this.tipo = tipo;
+    }
+
+    // Constructor con ID
+    public Usuario(int id, String nombreUsuario, String contrasena, String tipo) {
         this.id = id;
+        this.nombreUsuario = nombreUsuario; // Inicializa el nombre de usuario
         this.contrasena = contrasena;
         this.tipo = tipo;
     }
@@ -19,6 +28,14 @@ public class Usuario {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario; // Nuevo getter
+    }
+
+    public void setNombreUsuario(String nombreUsuario) { // Nuevo setter
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getContrasena() {
