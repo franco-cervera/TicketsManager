@@ -8,7 +8,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Nombre y versión de la base de datos
     private static final String DATABASE_NAME = "tickets_manager.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Constructor
     public DatabaseHelper(Context context) {
@@ -21,8 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createUsuariosTable = "CREATE TABLE usuarios (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nombreUsuario TEXT NOT NULL," +
-                "contrasena TEXT NOT NULL," +
-                "tipo TEXT NOT NULL" +
+                "password TEXT NOT NULL," +
+                "tipo TEXT NOT NULL," +
+                "bloqueado BOOLEAN NOT NULL" +
                 ");";
 
         // Crear tabla de tickets
@@ -48,4 +49,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS tickets");
         onCreate(db);
     }
+
+
 }

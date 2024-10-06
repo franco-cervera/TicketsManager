@@ -29,12 +29,14 @@
     <string name="lbl_tipo_usuario">Tipo de Usuario</string>
     <string name="txt_tipo_usuario">Ingrese Tipo de Usuario</string>
     <string name="btn_registrar">Registrar</string>
+    <string-array name="tipo_usuario_admin">
+    <item>Administrador</item>
+    </string-array>
     <string-array name="roles_array">
         <item>Administrador</item>
         <item>Trabajador</item>
         <item>Técnico</item>
     </string-array>
-
 
 
     <!--SELECCION-->

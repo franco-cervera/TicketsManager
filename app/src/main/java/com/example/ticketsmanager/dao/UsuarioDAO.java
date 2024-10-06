@@ -24,15 +24,15 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombreUsuario", usuario.getNombreUsuario());
-        values.put("contrasena", usuario.getContrasena());
+        values.put("password", usuario.getPassword());
         values.put("tipo", usuario.getTipo());
+        values.put("bloqueado", usuario.isBloqueado() ? 0 : 1); // Convertir boolean a int
 
         long id = db.insert("usuarios", null, values);
         usuario.setId((int) id); // Establece el ID generado en el objeto Usuario
 
         db.close();
     }
-
 
     @Override
     public Usuario listar(Integer id) {
@@ -43,8 +43,8 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         if (cursor != null && cursor.moveToFirst()) {
             Usuario usuario = new Usuario(
                     cursor.getInt(cursor.getColumnIndexOrThrow("id")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), // Obtener nombre de usuario
-                    cursor.getString(cursor.getColumnIndexOrThrow("contrasena")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("password")),
                     cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
             );
             cursor.close();
@@ -60,8 +60,9 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
     public void actualizar(Usuario usuario) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("contrasena", usuario.getContrasena());
+        values.put("password", usuario.getPassword());
         values.put("tipo", usuario.getTipo());
+        values.put("bloqueado", usuario.isBloqueado() ? 1 : 0); // Convertir boolean a int
 
         db.update("usuarios", values, "id = ?", new String[]{String.valueOf(usuario.getId())});
         db.close();
@@ -85,8 +86,8 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             do {
                 Usuario usuario = new Usuario(
                         cursor.getInt(cursor.getColumnIndexOrThrow("id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), // Obtener nombre de usuario
-                        cursor.getString(cursor.getColumnIndexOrThrow("contrasena")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("password")),
                         cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
                 );
                 usuarios.add(usuario);
@@ -107,7 +108,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             Usuario usuario = new Usuario(
                     cursor.getInt(cursor.getColumnIndexOrThrow("id")),
                     cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("contrasena")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("password")),
                     cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
             );
             cursor.close();
@@ -119,10 +120,10 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         return null; // Si no existe, retornar null
     }
 
-    public boolean validarCredenciales(String nombreUsuario, String contrasena) {
+    public boolean validarCredenciales(String nombreUsuario, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ? AND contrasena = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario, contrasena});
+        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ? AND password = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario, password});
 
         boolean existe = cursor.moveToFirst(); // true si existe, false si no
         cursor.close();
@@ -130,5 +131,14 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         return existe;
     }
 
+    public boolean existeUsuario(String nombreUsuario) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario});
 
+        boolean existe = cursor.moveToFirst(); // true si existe, false si no
+        cursor.close();
+        db.close();
+        return existe;
+    }
 }
