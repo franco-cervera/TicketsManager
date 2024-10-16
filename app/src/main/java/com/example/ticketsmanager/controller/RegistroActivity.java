@@ -97,6 +97,7 @@ public class RegistroActivity extends AppCompatActivity {
 
         // Mostrar un mensaje de éxito y regresar a la actividad anterior
         Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
         finish(); // Regresar a la actividad anterior
     }
 }

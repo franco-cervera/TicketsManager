@@ -30,7 +30,7 @@ public class Administrador extends Usuario {
 
     // Método para reabrir un ticket
     public void reabrirTicket(Ticket ticket, Tecnico tecnico) {
-        ticket.setEstado("Reabierto");
+        ticket.setEstado(Ticket.EstadoTicket.valueOf("Reabierto"));
         tecnico.setTicketsAtendidos(tecnico.getTicketsAtendidos() - 1);
         System.out.println("El ticket ha sido reabierto.");
     }

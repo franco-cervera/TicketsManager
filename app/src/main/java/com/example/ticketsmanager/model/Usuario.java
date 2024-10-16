@@ -5,7 +5,7 @@ public class Usuario {
     protected String nombreUsuario; // Nuevo campo
     protected String password;
     protected String tipo; // Puede ser "trabajador", "tecnico" o "administrador"
-    protected boolean bloqueado = false;
+    protected boolean bloqueado;
 
     // Constructor sin ID
     public Usuario(String nombreUsuario, String password, String tipo) {

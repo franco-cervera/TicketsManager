@@ -14,7 +14,7 @@
     <!--LOGIN-->
     <string name="titulo_login">Ingrese sesion</string>
     <string name="lbl_usuario">Usuario</string>
-    <string name="txt_usuario">Ingrese usuario</string>
+    <string name="txt_usuario">Ingrese ID usuario</string>
     <string name="lbl_password">Contraseña</string>
     <string name="txt_password">Ingrese contraseña</string>
     <string name="btn_ingresar">Ingresar</string>
@@ -30,7 +30,7 @@
     <string name="txt_tipo_usuario">Ingrese Tipo de Usuario</string>
     <string name="btn_registrar">Registrar</string>
     <string-array name="tipo_usuario_admin">
-    <item>Administrador</item>
+        <item>Administrador</item>
     </string-array>
     <string-array name="roles_array">
         <item>Administrador</item>

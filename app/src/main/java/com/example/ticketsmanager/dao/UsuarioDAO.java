@@ -26,7 +26,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         values.put("nombreUsuario", usuario.getNombreUsuario());
         values.put("password", usuario.getPassword());
         values.put("tipo", usuario.getTipo());
-        values.put("bloqueado", usuario.isBloqueado() ? 0 : 1); // Convertir boolean a int
+        values.put("bloqueado", usuario.isBloqueado() ? 1 : 0); // Convertir boolean a int
 
         long id = db.insert("usuarios", null, values);
         usuario.setId((int) id); // Establece el ID generado en el objeto Usuario
@@ -47,6 +47,10 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
                     cursor.getString(cursor.getColumnIndexOrThrow("password")),
                     cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
             );
+
+            // Recupera el estado de bloqueado y lo establece en el objeto Usuario
+            usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1); // Asegúrate de que aquí se lea el estado correctamente
+
             cursor.close();
             db.close();
             return usuario;
@@ -55,6 +59,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         db.close();
         return null;
     }
+
 
     @Override
     public void actualizar(Usuario usuario) {
@@ -90,6 +95,10 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
                         cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
                 );
+
+                // Recupera el estado de bloqueado y lo establece en el objeto Usuario
+                usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1); // Asegúrate de que aquí se lea el estado correctamente
+
                 usuarios.add(usuario);
             } while (cursor.moveToNext());
         }
@@ -98,6 +107,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         db.close();
         return usuarios;
     }
+
 
     public Usuario listarPorTipo(String tipo) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();

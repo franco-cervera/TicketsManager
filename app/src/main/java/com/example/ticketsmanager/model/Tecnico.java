@@ -13,7 +13,7 @@ public class Tecnico extends Usuario {
     // Método para atender un ticket
     public boolean atenderTicket(Ticket ticket) {
         if (ticketsAtendidos < 3 && ticket.getEstado().equals("No atendido")) {
-            ticket.setEstado("Atendido");
+            ticket.setEstado(Ticket.EstadoTicket.valueOf("Atendido"));
             ticket.setIdTecnico(this.id);
             ticketsAtendidos++;
             return true;
@@ -26,7 +26,7 @@ public class Tecnico extends Usuario {
     // Método para marcar un ticket como resuelto
     public void resolverTicket(Ticket ticket) {
         if (ticket.getIdTecnico() == this.id && ticket.getEstado().equals("Atendido")) {
-            ticket.setEstado("Resuelto");
+            ticket.setEstado(Ticket.EstadoTicket.valueOf("Resuelto"));
         }
     }
 
