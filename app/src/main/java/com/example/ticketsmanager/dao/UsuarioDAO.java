@@ -130,16 +130,33 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         return null; // Si no existe, retornar null
     }
 
-    public boolean validarCredenciales(String nombreUsuario, String password) {
+    public Usuario validarCredenciales(String nombreUsuario, String password, String tipo) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ? AND password = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario, password});
+        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ? AND password = ? AND tipo = ? AND bloqueado = 0";
+        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario, password, tipo});
 
-        boolean existe = cursor.moveToFirst(); // true si existe, false si no
-        cursor.close();
-        db.close();
-        return existe;
+        if (cursor.moveToFirst()) {
+            // Asegúrate de que los nombres de las columnas son correctos
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario"));
+            String pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+            String tipoUsuario = cursor.getString(cursor.getColumnIndexOrThrow("tipo"));
+            boolean bloqueado = cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1;
+
+            // Crear y retornar el usuario encontrado
+            Usuario usuario = new Usuario(id, nombre, pass, tipoUsuario);
+            usuario.setBloqueado(bloqueado);
+            cursor.close();
+            db.close();
+            return usuario;
+        } else {
+            cursor.close();
+            db.close();
+            return null; // No se encontró ningún usuario que coincida
+        }
     }
+
+
 
     public boolean existeUsuario(String nombreUsuario) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();

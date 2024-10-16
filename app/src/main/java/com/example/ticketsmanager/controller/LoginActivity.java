@@ -84,11 +84,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validarUsuario(TextInputEditText edtID, TextInputEditText edtPassword) {
-        String id = edtID.getText().toString().trim();
+        String nombreUsuario = edtID.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(id)) {
-            edtID.setError("Por favor ingresa tu ID");
+        if (TextUtils.isEmpty(nombreUsuario)) {
+            edtID.setError("Por favor ingresa tu nombre de usuario");
             return;
         }
 
@@ -97,33 +97,30 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Validaciones específicas basadas en el tipo de usuario
-        if (userType != null) {
+        // Validar credenciales usando el DAO
+        Usuario usuario = usuarioDAO.validarCredenciales(nombreUsuario, password, userType);
+
+        if (usuario != null) {
+            // Login exitoso, tipo de usuario coincide
+            Toast.makeText(this, "Login exitoso como " + userType, Toast.LENGTH_SHORT).show();
+
+            // Redirigir a la actividad correspondiente según el tipo de usuario
             if (userType.equals("Trabajador")) {
-                if (id.equals("trabajador") && password.equals("trabajador")) {
-                    Toast.makeText(this, "Login exitoso como Trabajador", Toast.LENGTH_SHORT).show();
-                    // Redirigir a la actividad del Trabajador si la tienes
-                } else {
-                    Toast.makeText(this, "ID o contraseña incorrectos para Trabajador", Toast.LENGTH_SHORT).show();
-                }
+                // Redirigir a la actividad del Trabajador
+                // Intent intent = new Intent(LoginActivity.this, TrabajadorActivity.class);
             } else if (userType.equals("Tecnico")) {
-                if (id.equals("tecnico") && password.equals("tecnico")) {
-                    Toast.makeText(this, "Login exitoso como Técnico", Toast.LENGTH_SHORT).show();
-                    // Redirigir a la actividad del Técnico si la tienes
-                } else {
-                    Toast.makeText(this, "ID o contraseña incorrectos para Técnico", Toast.LENGTH_SHORT).show();
-                }
+                // Redirigir a la actividad del Técnico
+                // Intent intent = new Intent(LoginActivity.this, TecnicoActivity.class);
             } else if (userType.equals("Administrador")) {
-                if (usuarioDAO.validarCredenciales(id, password)) { // Cambiar a usar el método de validar credenciales
-                    Toast.makeText(this, "Login exitoso como Administrador", Toast.LENGTH_SHORT).show();
-                    // Redirigir a AdminDashboardActivity
-                    Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
-                    startActivity(intent);
-                    finish(); // Cierra LoginActivity
-                } else {
-                    Toast.makeText(this, "ID o contraseña incorrectos para Administrador", Toast.LENGTH_SHORT).show();
-                }
+                // Redirigir a AdminDashboardActivity
+                Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
+                startActivity(intent);
+                finish(); // Cierra LoginActivity
             }
+        } else {
+            // Si las credenciales o el tipo de usuario son incorrectos
+            Toast.makeText(this, "Usuario, contraseña o tipo incorrectos", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

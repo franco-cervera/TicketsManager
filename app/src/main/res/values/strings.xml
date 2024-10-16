@@ -35,7 +35,7 @@
     <string-array name="roles_array">
         <item>Administrador</item>
         <item>Trabajador</item>
-        <item>Técnico</item>
+        <item>Tecnico</item>
     </string-array>
 
 
