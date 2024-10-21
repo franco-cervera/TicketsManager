@@ -8,6 +8,7 @@
     android:background="@drawable/back_login"
     tools:context=".controller.LoginActivity">
 
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="250dp"
@@ -48,7 +49,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="48dp"
         android:text="@string/btn_ingresar"
         android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
@@ -105,6 +106,17 @@
             android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnChangePassword"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="@string/btn_changePassword"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.ticketsmanager.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText edtID, edtPassword;
     private Button btnLogin;
     private String userType;
-    private Button btnRegistro;
+    private Button btnCambiarPassword;
     private UsuarioDAO usuarioDAO; // Agrega una variable para UsuarioDAO
 
     @Override
@@ -32,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login); // Cargar el layout del login.
 
-        // Inicializar el DAO
         usuarioDAO = new UsuarioDAO(this);
 
         // Recibir el tipo de usuario desde el Intent
@@ -42,17 +42,14 @@ public class LoginActivity extends AppCompatActivity {
             verificarAdministrador();
         }
 
-        // Inicializar los elementos del login
         inicializarLogin();
 
-        // Muestra el tipo de usuario en el login (opcional)
         if (userType != null) {
             Toast.makeText(this, "Tipo de usuario: " + userType, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void verificarAdministrador() {
-        // Verificar si existe un administrador registrado
         Usuario usuario = usuarioDAO.listarPorTipo("Administrador");
         if (usuario == null) {
             // No hay administrador registrado, redirigir a RegistroActivity
@@ -60,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegistroActivity.class);
             intent.putExtra("solo_admin", true); // Agregar extra para indicar que solo se puede registrar como administrador
             startActivity(intent);
-            finish(); // Cerrar LoginActivity
+            finish();
         } else {
             // Hay un administrador registrado
             Toast.makeText(this, "Administrador encontrado: " + usuario.getNombreUsuario(), Toast.LENGTH_SHORT).show();
@@ -79,8 +76,16 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = (TextInputEditText) inputLayoutPassword.getEditText(); // Obtiene el TextInputEditText del TextInputLayout
 
         btnLogin = findViewById(R.id.btnLogin);
+        btnCambiarPassword = findViewById(R.id.btnChangePassword);
 
         btnLogin.setOnClickListener(v -> validarUsuario(edtID, edtPassword));
+        btnCambiarPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, CambiarPassword.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void validarUsuario(TextInputEditText edtID, TextInputEditText edtPassword) {

@@ -1,6 +1,8 @@
 package com.example.ticketsmanager.database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -50,5 +52,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Método para obtener la contraseña del usuario por ID
+    public String obtenerPasswordPorId(int idUsuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT password FROM usuarios WHERE id = ?", new String[]{String.valueOf(idUsuario)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String password = cursor.getString(0);
+            cursor.close();
+            return password;
+        }
+
+        return null; // Usuario no encontrado
+    }
+
+    // Método para actualizar la contraseña del usuario
+    public boolean actualizarPassword(int idUsuario, String nuevaPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", nuevaPassword);
+
+        int rows = db.update("usuarios", values, "id = ?", new String[]{String.valueOf(idUsuario)});
+        return rows > 0; // Devuelve true si la actualización fue exitosa
+    }
 
 }

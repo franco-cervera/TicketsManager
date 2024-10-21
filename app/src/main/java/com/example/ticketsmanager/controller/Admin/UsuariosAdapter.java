@@ -46,18 +46,20 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.Usuari
 
     class UsuarioViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtNombreUsuario, txtTipoUsuario, txtEstadoBloqueo;
+        TextView txtNombreUsuario, txtTipoUsuario, txtEstadoBloqueo, txtIdUsuario;
 
         public UsuarioViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombreUsuario = itemView.findViewById(R.id.txtNombreUsuario);
             txtTipoUsuario = itemView.findViewById(R.id.txtTipoUsuario);
             txtEstadoBloqueo = itemView.findViewById(R.id.txtEstadoBloqueo);
+            txtIdUsuario = itemView.findViewById(R.id.txtIdUsuario);
         }
 
         public void bind(Usuario usuario, OnUsuarioClickListener listener) {
             txtNombreUsuario.setText(usuario.getNombreUsuario());
             txtTipoUsuario.setText(usuario.getTipo());
+            txtIdUsuario.setText("ID: " + String.valueOf(usuario.getId()));
 
             // Mostrar el estado de bloqueo
             txtEstadoBloqueo.setText(usuario.isBloqueado() ? "Bloqueado" : "Activo");

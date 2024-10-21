@@ -18,7 +18,7 @@
     <string name="lbl_password">Contraseña</string>
     <string name="txt_password">Ingrese contraseña</string>
     <string name="btn_ingresar">Ingresar</string>
-    <string name="btn_registrar_usuario">Registrar</string>
+    <string name="btn_changePassword">Cambiar contraseña</string>
     <string name="lbl_crear_cuenta">No tenés cuenta?, Registrate</string>
 
     <!--REGISTRO-->
@@ -38,6 +38,11 @@
         <item>Tecnico</item>
     </string-array>
 
+    <!--CAMBIAR PASS-->
+    <string name="edt_ID_usuario">Ingrese el ID del Usuario</string>
+    <string name="edt_Pass">Ingrese la password actual</string>
+    <string name="edt_newPass">Ingrese la nueva password</string>
+    <string name="edt_ConfirmPass">Confirme nueva password</string>
 
     <!--SELECCION-->
 

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
+
     <!-- Nombre del usuario -->
     <TextView
         android:id="@+id/txtNombreUsuario"
@@ -26,6 +27,17 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNombreUsuario"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ID de Usuario -->
+    <TextView
+        android:id="@+id/txtIdUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTipoUsuario"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Estado de bloqueo -->
