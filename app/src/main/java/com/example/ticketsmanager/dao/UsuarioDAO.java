@@ -130,20 +130,19 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         return null; // Si no existe, retornar null
     }
 
-    public Usuario validarCredenciales(String nombreUsuario, String password, String tipo) {
+    public Usuario validarCredenciales(String idUsuario, String password, String tipo) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ? AND password = ? AND tipo = ? AND bloqueado = 0";
-        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario, password, tipo});
+        String query = "SELECT * FROM usuarios WHERE id = ? AND password = ? AND tipo = ? AND bloqueado = 0";
+        Cursor cursor = db.rawQuery(query, new String[]{idUsuario, password, tipo});
 
         if (cursor.moveToFirst()) {
-            // Asegúrate de que los nombres de las columnas son correctos
             int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario"));
             String pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
             String tipoUsuario = cursor.getString(cursor.getColumnIndexOrThrow("tipo"));
             boolean bloqueado = cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1;
 
-            // Crear y retornar el usuario encontrado
+
             Usuario usuario = new Usuario(id, nombre, pass, tipoUsuario);
             usuario.setBloqueado(bloqueado);
             cursor.close();
@@ -158,14 +157,16 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
 
 
 
-    public boolean existeUsuario(String nombreUsuario) {
+    public boolean existeUsuario(String idUsuario) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM usuarios WHERE nombreUsuario = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{nombreUsuario});
+        String query = "SELECT * FROM usuarios WHERE id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{idUsuario});
 
         boolean existe = cursor.moveToFirst(); // true si existe, false si no
         cursor.close();
         db.close();
         return existe;
     }
+
+
 }

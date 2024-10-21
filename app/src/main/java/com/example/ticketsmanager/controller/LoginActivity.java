@@ -89,10 +89,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validarUsuario(TextInputEditText edtID, TextInputEditText edtPassword) {
-        String nombreUsuario = edtID.getText().toString().trim();
+        String idUsuario = edtID.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(nombreUsuario)) {
+
+        if (TextUtils.isEmpty(idUsuario)) {
             edtID.setError("Por favor ingresa tu nombre de usuario");
             return;
         }
@@ -102,8 +103,10 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+
+
         // Validar credenciales usando el DAO
-        Usuario usuario = usuarioDAO.validarCredenciales(nombreUsuario, password, userType);
+        Usuario usuario = usuarioDAO.validarCredenciales(idUsuario, password, userType);
 
         if (usuario != null) {
             // Login exitoso, tipo de usuario coincide

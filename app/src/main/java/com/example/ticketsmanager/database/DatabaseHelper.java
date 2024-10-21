@@ -46,13 +46,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Manejar las actualizaciones de la base de datos
         db.execSQL("DROP TABLE IF EXISTS usuarios");
         db.execSQL("DROP TABLE IF EXISTS tickets");
         onCreate(db);
     }
 
-    // Método para obtener la contraseña del usuario por ID
+
     public String obtenerPasswordPorId(int idUsuario) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT password FROM usuarios WHERE id = ?", new String[]{String.valueOf(idUsuario)});
@@ -66,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null; // Usuario no encontrado
     }
 
-    // Método para actualizar la contraseña del usuario
+
     public boolean actualizarPassword(int idUsuario, String nuevaPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -75,5 +74,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int rows = db.update("usuarios", values, "id = ?", new String[]{String.valueOf(idUsuario)});
         return rows > 0; // Devuelve true si la actualización fue exitosa
     }
+
+    public void blanquearPassword(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", String.valueOf(userId)); // La contraseña será igual al ID del usuario
+        db.update("usuarios", values, "id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+    }
+
 
 }

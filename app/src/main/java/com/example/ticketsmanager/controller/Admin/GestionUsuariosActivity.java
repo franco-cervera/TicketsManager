@@ -37,19 +37,18 @@ public class GestionUsuariosActivity extends AppCompatActivity {
         btnDesbloquearUsuario = findViewById(R.id.btnDesbloquearUsuario);
         btnAgregarUsuario = findViewById(R.id.btnAgregarUsuario);
 
-        // Inicializa tu lista de usuarios
-        usuarioDAO = new UsuarioDAO(this); // Asegúrate de inicializar el DAO correctamente
-        usuarios = usuarioDAO.listarTodos(); // Obtener usuarios de tu base de datos
 
-        // Configurar el RecyclerView
+        usuarioDAO = new UsuarioDAO(this);
+        usuarios = usuarioDAO.listarTodos();
+
+
         usuariosAdapter = new UsuariosAdapter(usuarios);
         recyclerView.setAdapter(usuariosAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Establecer el listener para la selección de usuario
+
         usuariosAdapter.setOnUsuarioClickListener(usuario -> {
-            usuarioSeleccionado = usuario; // Asignar el usuario seleccionado
-            // Puedes mostrar un mensaje o cambiar el estado visualmente si deseas
+            usuarioSeleccionado = usuario;
             Toast.makeText(this, "Usuario seleccionado: " + usuario.getNombreUsuario(), Toast.LENGTH_SHORT).show();
         });
 

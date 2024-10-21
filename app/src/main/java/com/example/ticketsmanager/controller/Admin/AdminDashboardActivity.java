@@ -55,7 +55,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         cardGestionPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ir a otras opciones administrativas
                 Intent intent = new Intent(AdminDashboardActivity.this, GestionPasswordActivity.class);
                 startActivity(intent);
             }
