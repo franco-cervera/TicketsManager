@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TicketsManager"
         tools:targetApi="31">
         <activity
+            android:name=".controller.tecnico.MarcasFallasTecActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.tecnico.GestionTicketTecnicoActivity"
             android:exported="false" />
         <activity
