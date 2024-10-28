@@ -10,37 +10,13 @@ public class Tecnico extends Usuario {
         this.ticketsAtendidos = 0;
     }
 
-    // Método para atender un ticket
-    public boolean atenderTicket(Ticket ticket) {
-        if (ticketsAtendidos < 3 && ticket.getEstado().equals("No atendido")) {
-            ticket.setEstado(Ticket.EstadoTicket.valueOf("Atendido"));
-            ticket.setIdTecnico(this.id);
-            ticketsAtendidos++;
-            return true;
-        } else {
-            System.out.println("No puedes atender más tickets.");
-            return false;
-        }
-    }
 
-    // Método para marcar un ticket como resuelto
-    public void resolverTicket(Ticket ticket) {
-        if (ticket.getIdTecnico() == this.id && ticket.getEstado().equals("Atendido")) {
-            ticket.setEstado(Ticket.EstadoTicket.valueOf("Resuelto"));
-        }
-    }
-
-    // Método para manejar fallas
-    public void recibirFalla() {
-        fallas++;
-        if (fallas >= 3) {
-            System.out.println("Acceso bloqueado. Debes pedir al administrador que te habilite.");
-        }
-    }
-
-    // Otros métodos para obtener y setear fallas y tickets atendidos
     public int getFallas() {
         return fallas;
+    }
+
+    public void setFallas(int fallas) {
+        this.fallas = fallas;
     }
 
     public int getTicketsAtendidos() {

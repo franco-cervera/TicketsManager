@@ -60,41 +60,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/txt_usuario"
-            android:textColorHint="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/textView_password_registro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/lbl_password"
-        android:textColor="@color/white"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/edtID_registro" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtPassword_registro"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColorHint="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/textView_password_registro"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/white">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/txt_password"
-            android:inputType="textPassword"
+            android:hint="Ingrese nombre del usuario"
             android:textColorHint="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,14 +68,13 @@
         android:id="@+id/textView_tipoUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/lbl_tipo_usuario"
         android:textColor="@color/white"
         android:textSize="28sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/edtPassword_registro" />
+        app:layout_constraintTop_toBottomOf="@+id/edtID_registro" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -127,7 +92,7 @@
         android:id="@+id/btnRegistro_registro"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="72dp"
         android:text="@string/btn_registrar"
         android:textSize="23dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"

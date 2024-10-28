@@ -37,13 +37,13 @@ public class Ticket {
     }
 
     // Constructor con id
-    public Ticket(int id,String titulo, String descripcion, int idTrabajador, EstadoTicket estado) {
+    public Ticket(int id,String titulo, String descripcion, int idTrabajador, int idTecnico, EstadoTicket estado) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.idTrabajador = idTrabajador;
         this.estado = estado;
-        this.idTecnico = -1; // Inicialmente no tiene técnico asignado
+        this.idTecnico = idTecnico; // Inicialmente no tiene técnico asignado
         this.reabierto = false; // Inicialmente no está reabierto
         this.idTecnicoAnterior = -1; // Inicialmente no tiene técnico anterior
     }
@@ -53,7 +53,7 @@ public class Ticket {
         this.descripcion = descripcion;
         this.idTrabajador = idTrabajador;
         this.estado = estado;
-        this.idTecnico = -1; // Inicialmente no tiene técnico asignado
+        this.idTecnico = idTecnico; // Inicialmente no tiene técnico asignado
         this.reabierto = false; // Inicialmente no está reabierto
         this.idTecnicoAnterior = -1; // Inicialmente no tiene técnico anterior
     }

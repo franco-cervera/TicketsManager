@@ -24,12 +24,17 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombreUsuario", usuario.getNombreUsuario());
-        values.put("password", usuario.getPassword());
+        values.put("password", "");
         values.put("tipo", usuario.getTipo());
         values.put("bloqueado", usuario.isBloqueado() ? 1 : 0); // Convertir boolean a int
 
         long id = db.insert("usuarios", null, values);
         usuario.setId((int) id); // Establece el ID generado en el objeto Usuario
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put("password", String.valueOf(id)); // Usar el ID como la nueva contraseña
+
+        db.update("usuarios", updateValues, "id = ?", new String[]{String.valueOf(id)});
 
         db.close();
     }
@@ -137,13 +142,11 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
 
         if (cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-            String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario"));
             String pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
             String tipoUsuario = cursor.getString(cursor.getColumnIndexOrThrow("tipo"));
             boolean bloqueado = cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1;
 
-
-            Usuario usuario = new Usuario(id, nombre, pass, tipoUsuario);
+            Usuario usuario = new Usuario(id, cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), pass, tipoUsuario);
             usuario.setBloqueado(bloqueado);
             cursor.close();
             db.close();
@@ -154,6 +157,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             return null; // No se encontró ningún usuario que coincida
         }
     }
+
 
 
 

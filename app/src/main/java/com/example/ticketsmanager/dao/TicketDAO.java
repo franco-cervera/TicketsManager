@@ -26,8 +26,8 @@ public class TicketDAO implements DAO<Ticket, Integer> {
         values.put("titulo", ticket.getTitulo());
         values.put("descripcion", ticket.getDescripcion());
         values.put("id_trabajador", ticket.getIdTrabajador());
-        values.put("id_tecnico", ticket.getIdTecnico());
-        values.put("estado", ticket.getEstado().name()); // Guardar el estado como String
+        values.put("estado", ticket.getEstado().name());
+
 
         db.insert("tickets", null, values);
         db.close();
@@ -46,9 +46,9 @@ public class TicketDAO implements DAO<Ticket, Integer> {
                     cursor.getString(cursor.getColumnIndexOrThrow("titulo")),
                     cursor.getString(cursor.getColumnIndexOrThrow("descripcion")),
                     cursor.getInt(cursor.getColumnIndexOrThrow("id_trabajador")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("id_tecnico")),
                     EstadoTicket.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("estado"))) // Convertir el String a EstadoTicket
             );
-            ticket.setIdTecnico(cursor.getInt(cursor.getColumnIndexOrThrow("id_tecnico")));
             cursor.close();
         }
         db.close();
@@ -91,6 +91,7 @@ public class TicketDAO implements DAO<Ticket, Integer> {
                         cursor.getString(cursor.getColumnIndexOrThrow("titulo")),
                         cursor.getString(cursor.getColumnIndexOrThrow("descripcion")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("id_trabajador")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id_tecnico")),
                         EstadoTicket.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("estado"))) // Convertir el String a EstadoTicket
                 );
                 ticket.setIdTecnico(cursor.getInt(cursor.getColumnIndexOrThrow("id_tecnico")));
@@ -98,6 +99,59 @@ public class TicketDAO implements DAO<Ticket, Integer> {
             }
             cursor.close();
         }
+        db.close();
+        return tickets;
+    }
+
+
+    public int contarTicketsAtendidosPorTecnico(int idTecnico) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        int count = 0;
+
+        try {
+            String query = "SELECT COUNT(*) FROM tickets WHERE estado = ? AND id_tecnico = ?";
+            cursor = db.rawQuery(query, new String[]{EstadoTicket.ATENDIDO.name(), String.valueOf(idTecnico)});
+
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return count;
+    }
+
+
+    // Método para listar los tickets que no están finalizados
+    public List<Ticket> listarNoFinalizados() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Ticket> tickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets WHERE estado != ?";
+        Cursor cursor = db.rawQuery(query, new String[]{EstadoTicket.FINALIZADO.name()});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Ticket ticket = new Ticket(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("titulo")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("descripcion")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id_trabajador")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id_tecnico")),
+                        EstadoTicket.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("estado"))) // Convertir el String a EstadoTicket
+                );
+                ticket.setIdTecnico(cursor.getInt(cursor.getColumnIndexOrThrow("id_tecnico")));
+                tickets.add(ticket);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         db.close();
         return tickets;
     }

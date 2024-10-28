@@ -1,4 +1,4 @@
-package com.example.ticketsmanager.controller.Admin;
+package com.example.ticketsmanager.controller.trabajador;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,30 +17,24 @@ public class AgregarTicketActivity extends AppCompatActivity {
     private EditText editTextTitulo;
     private EditText editTextDescripcion;
     private TicketDAO ticketDAO;
-    private int idTrabajador; // Almacena el ID del trabajador
+    private int idTrabajador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_ticket);
 
-        // Inicializa el TicketDAO
+
         ticketDAO = new TicketDAO(this);
 
-        // Obtén el ID del trabajador
-        idTrabajador = getIntent().getIntExtra("ID_TRABAJADOR", -1); // -1 es el valor predeterminado si no se pasa nada
 
-        // Referencias a los EditText y al botón
+        idTrabajador = getIntent().getIntExtra("id_trabajador", -1);
+
         editTextTitulo = findViewById(R.id.etTitulo);
         editTextDescripcion = findViewById(R.id.etDescripcion);
         Button btnAgregar = findViewById(R.id.btnAgregar);
 
-        btnAgregar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                agregarTicket();
-            }
-        });
+        btnAgregar.setOnClickListener(view -> agregarTicket());
     }
 
     private void agregarTicket() {
@@ -53,14 +47,19 @@ public class AgregarTicketActivity extends AppCompatActivity {
             return;
         }
 
-        Ticket nuevoTicket = new Ticket(titulo, descripcion, idTrabajador, estado);
+        if (idTrabajador == -1) {
+            Toast.makeText(this, "Error: IDs de trabajador o técnico no válidos.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Ticket nuevoTicket = new Ticket(titulo,descripcion,idTrabajador,estado);
         ticketDAO.crear(nuevoTicket);
 
         Toast.makeText(this, "Ticket agregado exitosamente.", Toast.LENGTH_SHORT).show();
 
-        // Envía el resultado de éxito antes de cerrar la actividad
+
         setResult(RESULT_OK);
-        finish(); // Cierra la actividad y regresa a la anterior
+        finish();
     }
 
 

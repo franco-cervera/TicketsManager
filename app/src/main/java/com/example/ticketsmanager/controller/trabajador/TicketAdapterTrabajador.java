@@ -1,4 +1,4 @@
-package com.example.ticketsmanager.controller.Admin;
+package com.example.ticketsmanager.controller.trabajador;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +13,13 @@ import com.example.ticketsmanager.model.Ticket;
 
 import java.util.List;
 
-public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketViewHolder> {
+public class TicketAdapterTrabajador extends RecyclerView.Adapter<TicketAdapterTrabajador.TicketViewHolder> {
 
     private List<Ticket> ticketList;
     private OnTicketClickListener onTicketClickListener;
     private Ticket selectedTicket; // Mantiene la referencia del ticket seleccionado
 
-    public TicketAdapter(List<Ticket> ticketList) {
+    public TicketAdapterTrabajador(List<Ticket> ticketList) {
         this.ticketList = ticketList;
     }
 
@@ -30,7 +30,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
     @NonNull
     @Override
     public TicketViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ticket, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ticket_trabajador, parent, false);
         return new TicketViewHolder(view);
     }
 
@@ -47,17 +47,24 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
 
     class TicketViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitulo, tvEstado;
+        TextView tvTitulo, tvEstado, tvTecnico;
 
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
             tvEstado = itemView.findViewById(R.id.tvEstado);
+            tvTecnico = itemView.findViewById(R.id.tvTecnico);
         }
 
         public void bind(Ticket ticket, OnTicketClickListener listener) {
             tvTitulo.setText(ticket.getTitulo());
             tvEstado.setText(ticket.getEstado().toString());
+
+            if (ticket.getIdTecnico() > 0) {
+                tvTecnico.setText("Técnico ID: " + ticket.getIdTecnico());
+            } else {
+                tvTecnico.setText("Sin técnico asignado");
+            }
 
             // Configurar el clic en el elemento
             itemView.setOnClickListener(v -> {

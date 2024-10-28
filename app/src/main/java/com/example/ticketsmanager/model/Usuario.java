@@ -2,12 +2,12 @@ package com.example.ticketsmanager.model;
 
 public class Usuario {
     protected int id;
-    protected String nombreUsuario;
+    protected String nombreUsuario; // Mantenerlo para el registro
     protected String password;
     protected String tipo;
     protected boolean bloqueado;
 
-    // Constructor sin ID
+    // Constructor sin ID (para el registro)
     public Usuario(String nombreUsuario, String password, String tipo) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
@@ -37,11 +37,13 @@ public class Usuario {
         return nombreUsuario;
     }
 
-    public void setNombreUsuario(String nombreUsuario) { // Nuevo setter
+    public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public String getPassword() { return password;}
+    public String getPassword() {
+        return password;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -55,10 +57,13 @@ public class Usuario {
         this.tipo = tipo;
     }
 
-    public boolean isBloqueado() { return bloqueado; }
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
 
-    public void setBloqueado(boolean bloqueado) { this.bloqueado = bloqueado;}
-
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
+    }
 
     public void cambiarPassword(String nuevaPassword) {
         this.password = nuevaPassword;

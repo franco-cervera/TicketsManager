@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ticketsmanager.R;
 import com.example.ticketsmanager.controller.Admin.AdminDashboardActivity;
+import com.example.ticketsmanager.controller.tecnico.TecnicoDashboardActivity;
+import com.example.ticketsmanager.controller.trabajador.TrabajadorDashboardActivity;
 import com.example.ticketsmanager.dao.UsuarioDAO; // Asegúrate de importar UsuarioDAO
 import com.example.ticketsmanager.model.Usuario; // Asegúrate de importar Usuario
 import com.google.android.material.textfield.TextInputEditText;
@@ -88,13 +90,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Limpiar el campo de contraseña al volver a la actividad
+        edtPassword.setText("");
+    }
+
     private void validarUsuario(TextInputEditText edtID, TextInputEditText edtPassword) {
         String idUsuario = edtID.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
-
+        // Validaciones de entrada
         if (TextUtils.isEmpty(idUsuario)) {
-            edtID.setError("Por favor ingresa tu nombre de usuario");
+            edtID.setError("Por favor ingresa tu ID de usuario");
             return;
         }
 
@@ -103,32 +112,48 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
-
-        // Validar credenciales usando el DAO
+        // Validación de credenciales
         Usuario usuario = usuarioDAO.validarCredenciales(idUsuario, password, userType);
 
-        if (usuario != null) {
-            // Login exitoso, tipo de usuario coincide
-            Toast.makeText(this, "Login exitoso como " + userType, Toast.LENGTH_SHORT).show();
+        // Verifica si la contraseña es igual al nombre de usuario
+        if (password.equals(idUsuario)) {
+            Toast.makeText(this, "Debes cambiar tu contraseña antes de iniciar sesión.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, CambiarPassword.class);
+            startActivity(intent);
+            return;
+        }
 
-            // Redirigir a la actividad correspondiente según el tipo de usuario
-            if (userType.equals("Trabajador")) {
-                // Redirigir a la actividad del Trabajador
-                // Intent intent = new Intent(LoginActivity.this, TrabajadorActivity.class);
-            } else if (userType.equals("Tecnico")) {
-                // Redirigir a la actividad del Técnico
-                // Intent intent = new Intent(LoginActivity.this, TecnicoActivity.class);
-            } else if (userType.equals("Administrador")) {
-                // Redirigir a AdminDashboardActivity
-                Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
-                startActivity(intent);
-                finish(); // Cierra LoginActivity
+        // Verifica si el usuario es válido
+        if (usuario != null) {
+            Toast.makeText(this, "Login exitoso como " + userType, Toast.LENGTH_SHORT).show();
+            Intent intent;
+
+            // Redirigir según el tipo de usuario
+            switch (userType) {
+                case "Trabajador":
+                    intent = new Intent(LoginActivity.this, TrabajadorDashboardActivity.class);
+                    intent.putExtra("id_trabajador", usuario.getId());
+                    break;
+                case "Tecnico":
+                    intent = new Intent(LoginActivity.this, TecnicoDashboardActivity.class);
+                    intent.putExtra("id_tecnico", usuario.getId());
+                    break;
+                case "Administrador":
+                    intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
+                    // id admin ?
+                    break;
+                default:
+                    Toast.makeText(this, "Tipo de usuario no reconocido", Toast.LENGTH_SHORT).show();
+                    return;
             }
+
+            startActivity(intent);
+            finish(); // Cierra LoginActivity
         } else {
             // Si las credenciales o el tipo de usuario son incorrectos
             Toast.makeText(this, "Usuario, contraseña o tipo incorrectos", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

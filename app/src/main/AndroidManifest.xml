@@ -15,6 +15,18 @@
         android:theme="@style/Theme.TicketsManager"
         tools:targetApi="31">
         <activity
+            android:name=".controller.tecnico.GestionTicketTecnicoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.tecnico.TecnicoDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.trabajador.GestionTicketTrabajadorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.trabajador.TrabajadorDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.Admin.GestionPasswordActivity"
             android:exported="false" />
         <activity
@@ -24,7 +36,7 @@
             android:name=".controller.Admin.ActualizarTicketActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.Admin.AgregarTicketActivity"
+            android:name=".controller.trabajador.AgregarTicketActivity"
             android:exported="false" />
         <activity
             android:name=".controller.Admin.GestionTicketsActivity"

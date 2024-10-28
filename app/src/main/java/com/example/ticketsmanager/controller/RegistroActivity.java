@@ -19,7 +19,6 @@ import com.google.android.material.textfield.TextInputLayout;
 public class RegistroActivity extends AppCompatActivity {
 
     private TextInputEditText edtUsername; // Nombre de usuario
-    private TextInputEditText edtPassword; // Contraseña
     private Spinner spinner; // Tipo de usuario
     private UsuarioDAO usuarioDAO;
     private boolean soloAdmin; // Variable para verificar si solo se permite registrar un administrador
@@ -31,10 +30,8 @@ public class RegistroActivity extends AppCompatActivity {
 
         // Inicializar los componentes de la interfaz
         TextInputLayout layoutUsername = findViewById(R.id.edtID_registro);
-        TextInputLayout layoutPassword = findViewById(R.id.edtPassword_registro);
 
         edtUsername = (TextInputEditText) layoutUsername.getEditText();
-        edtPassword = (TextInputEditText) layoutPassword.getEditText();
 
         spinner = findViewById(R.id.spinner);
         Button btnRegister = findViewById(R.id.btnRegistro_registro);
@@ -75,16 +72,15 @@ public class RegistroActivity extends AppCompatActivity {
 
     private void registerUser(View view) {
         String username = edtUsername.getText().toString().trim(); // Obtener nombre de usuario
-        String password = edtPassword.getText().toString().trim(); // Obtener contraseña
         String tipo = soloAdmin ? "Administrador" : spinner.getSelectedItem().toString(); // Obtener tipo de usuario
 
-        if (username.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty()) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Crear un nuevo usuario sin ID
-        Usuario newUser = new Usuario(username, password, tipo); // Usa el constructor adecuado
+        Usuario newUser = new Usuario(username, "", tipo); // Usa el constructor adecuado
 
         // Verificar si el usuario ya existe
         if (usuarioDAO.existeUsuario(username)) { // Debes implementar este método en UsuarioDAO

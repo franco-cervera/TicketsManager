@@ -2,7 +2,6 @@ package com.example.ticketsmanager.controller.Admin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -11,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticketsmanager.R;
-import com.example.ticketsmanager.controller.Admin.AgregarTicketActivity;
+import com.example.ticketsmanager.controller.trabajador.AgregarTicketActivity;
+import com.example.ticketsmanager.controller.trabajador.TicketAdapterTrabajador;
 import com.example.ticketsmanager.dao.TicketDAO;
 import com.example.ticketsmanager.model.Ticket;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class GestionTicketsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private TicketAdapter ticketAdapter;
+    private TicketAdapterTrabajador ticketAdapter;
     private List<Ticket> ticketList;
     private Button btnAgregarTicket, btnActualizarTicket, btnEliminarTicket;
     private Ticket ticketSeleccionado; // Mantiene referencia al ticket seleccionado
@@ -41,7 +41,7 @@ public class GestionTicketsActivity extends AppCompatActivity {
         ticketList = ticketDAO.listarTodos();
 
         // Configurar el RecyclerView
-        ticketAdapter = new TicketAdapter(ticketList);
+        ticketAdapter = new TicketAdapterTrabajador(ticketList);
         recyclerView.setAdapter(ticketAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
