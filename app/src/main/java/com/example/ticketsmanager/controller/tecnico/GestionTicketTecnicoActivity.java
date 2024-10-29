@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ticketsmanager.R;
 import com.example.ticketsmanager.controller.trabajador.TicketAdapterTrabajador;
 import com.example.ticketsmanager.dao.TicketDAO;
+import com.example.ticketsmanager.dao.UsuarioDAO;
 import com.example.ticketsmanager.model.Ticket;
 
 import java.util.List;
@@ -55,14 +56,21 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
 
         ticketsAtendidosCount = ticketDAO.contarTicketsAtendidosPorTecnico(tecnicoId);
 
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this);
+
         btnTomarTicket.setOnClickListener(v -> {
             if (ticketSeleccionado != null) {
                 if (ticketsAtendidosCount < 3
-                        && ticketSeleccionado.getEstado()
-                        == Ticket.EstadoTicket.NO_ATENDIDO || ticketSeleccionado.getEstado()
-                        == Ticket.EstadoTicket.REABIERTO) {
+                        && (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.NO_ATENDIDO
+                        || ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO)) {
+
                     ticketSeleccionado.setEstado(Ticket.EstadoTicket.ATENDIDO);
                     ticketSeleccionado.setIdTecnico(tecnicoId);
+
+                    if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
+                        usuarioDAO.incrementarFallasTecnico(tecnicoId); // Asignar una falla si estaba en REABIERTO
+                    }
+
                     ticketDAO.actualizar(ticketSeleccionado);
                     ticketsAtendidosCount++;
                     actualizarListaTickets();
@@ -77,18 +85,24 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
             }
         });
 
-        // Manejo de clic para finalizar un ticket
         btnFinalizarTicket.setOnClickListener(v -> {
             if (ticketSeleccionado != null && ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO && tecnicoId == ticketSeleccionado.getIdTecnico()) {
                 ticketSeleccionado.setEstado(Ticket.EstadoTicket.RESUELTO);
+
+                if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
+                    usuarioDAO.limpiarFallaTecnico(tecnicoId); // Remover una falla si el técnico lo resolvió
+                }
+
                 ticketDAO.actualizar(ticketSeleccionado);
-                ticketsAtendidosCount--; // Decrementar el contador
+                ticketsAtendidosCount--;
                 actualizarListaTickets();
                 Toast.makeText(this, "Ticket finalizado: " + ticketSeleccionado.getTitulo(), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "No puedes finalizar este ticket", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     // Método para actualizar la lista de tickets después de tomar o finalizar uno

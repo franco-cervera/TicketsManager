@@ -90,7 +90,7 @@ public class CambiarPassword extends AppCompatActivity {
                 boolean isPasswordUpdated = db.actualizarPassword(idUsuarioInt, newPass); // Método que debes implementar en DatabaseHelper
                 if (isPasswordUpdated) {
                     Toast.makeText(CambiarPassword.this, "Contraseña actualizada exitosamente", Toast.LENGTH_SHORT).show();
-                    finish(); // Cierra la actividad después de la actualización
+                    finish();
                 } else {
                     Toast.makeText(CambiarPassword.this, "Error al actualizar la contraseña", Toast.LENGTH_SHORT).show();
                 }

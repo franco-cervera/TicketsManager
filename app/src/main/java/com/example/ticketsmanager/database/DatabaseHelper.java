@@ -10,7 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Nombre y versión de la base de datos
     private static final String DATABASE_NAME = "tickets_manager.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Constructor
     public DatabaseHelper(Context context) {
@@ -25,7 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "nombreUsuario TEXT NOT NULL," +
                 "password TEXT NOT NULL," +
                 "tipo TEXT NOT NULL," +
-                "bloqueado BOOLEAN NOT NULL" +
+                "bloqueado BOOLEAN NOT NULL," +
+                "marcas INT NOT NULL," +
+                "fallas INT NOT NULL" +
                 ");";
 
         // Crear tabla de tickets
@@ -46,10 +48,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 3) {
+            // Agregar las columnas fallas y marcas en la tabla usuarios
+            db.execSQL("ALTER TABLE usuarios ADD COLUMN fallas INTEGER DEFAULT 0");
+            db.execSQL("ALTER TABLE usuarios ADD COLUMN marcas INTEGER DEFAULT 0");
+        }
+    }
+    /*
+    PARA CUANDO TODO ESTE LISTO, INCREMENTAR 1 VERSION A LA BD Y EJECUTAR
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS usuarios");
         db.execSQL("DROP TABLE IF EXISTS tickets");
         onCreate(db);
-    }
+    }*/
+
 
 
     public String obtenerPasswordPorId(int idUsuario) {

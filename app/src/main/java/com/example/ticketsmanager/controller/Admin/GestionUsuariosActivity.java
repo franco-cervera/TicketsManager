@@ -23,8 +23,8 @@ public class GestionUsuariosActivity extends AppCompatActivity {
     private UsuariosAdapter usuariosAdapter;
     private List<Usuario> usuarios;
     private Button btnBloquearUsuario, btnDesbloquearUsuario, btnAgregarUsuario;
-    private Usuario usuarioSeleccionado; // Mantén referencia al usuario seleccionado
-    private UsuarioDAO usuarioDAO; // Inicializa el DAO
+    private Usuario usuarioSeleccionado;
+    private UsuarioDAO usuarioDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,30 +54,31 @@ public class GestionUsuariosActivity extends AppCompatActivity {
         // Manejo de clic para bloquear usuario
         btnBloquearUsuario.setOnClickListener(v -> {
             if (usuarioSeleccionado != null) {
-                usuarioSeleccionado.setBloqueado(true); // Cambia el estado de bloqueo
-                usuarioDAO.actualizar(usuarioSeleccionado); // Actualiza en la base de datos
-                usuariosAdapter.notifyDataSetChanged(); // Notifica al adaptador
+                usuarioDAO.bloquearUsuario(usuarioSeleccionado.getId());
+                usuarioSeleccionado.setBloqueado(true);
+                usuariosAdapter.notifyDataSetChanged();
                 Toast.makeText(this, "Usuario bloqueado", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Selecciona un usuario para bloquear", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         // Manejo de clic para desbloquear usuario
         btnDesbloquearUsuario.setOnClickListener(v -> {
             if (usuarioSeleccionado != null) {
-                usuarioSeleccionado.setBloqueado(false); // Cambia el estado de desbloqueo
-                usuarioDAO.actualizar(usuarioSeleccionado); // Actualiza en la base de datos
-                usuariosAdapter.notifyDataSetChanged(); // Notifica al adaptador
+                usuarioDAO.desbloquearUsuario(usuarioSeleccionado.getId());
+                usuarioSeleccionado.setBloqueado(false);
+                usuariosAdapter.notifyDataSetChanged();
                 Toast.makeText(this, "Usuario desbloqueado", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Selecciona un usuario para desbloquear", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         btnAgregarUsuario.setOnClickListener(v -> {
             Intent intent = new Intent(GestionUsuariosActivity.this, RegistroActivity.class);
-            // Si necesitas pasar alguna información, puedes hacerlo aquí
             startActivityForResult(intent, 1);
     });
     }
@@ -87,13 +88,13 @@ public class GestionUsuariosActivity extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             // Volver a cargar la lista de usuarios
-            usuarios = usuarioDAO.listarTodos(); // Obtener usuarios de tu base de datos
+            usuarios = usuarioDAO.listarTodos();
             usuariosAdapter = new UsuariosAdapter(usuarios);
             recyclerView.setAdapter(usuariosAdapter);
 
-            // Reestablecer el listener para la selección de usuario
+
             usuariosAdapter.setOnUsuarioClickListener(usuario -> {
-                usuarioSeleccionado = usuario; // Asignar el usuario seleccionado
+                usuarioSeleccionado = usuario;
                 Toast.makeText(this, "Usuario seleccionado: " + usuario.getNombreUsuario(), Toast.LENGTH_SHORT).show();
             });
         }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticketsmanager.R;
 import com.example.ticketsmanager.dao.TicketDAO;
+import com.example.ticketsmanager.dao.UsuarioDAO;
 import com.example.ticketsmanager.model.Ticket;
 
 import java.util.List;
@@ -22,8 +23,9 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
     private TicketAdapterTrabajador ticketAdapter;
     private List<Ticket> ticketList;
     private Button btnAgregarTicket, btnReabrirTicket, btnTicketResuelto;
-    private Ticket ticketSeleccionado; // Mantiene referencia al ticket seleccionado
-    private TicketDAO ticketDAO; // Inicializa el DAO
+    private Ticket ticketSeleccionado;
+    private TicketDAO ticketDAO;
+    private UsuarioDAO usuarioDAO; // Agregar UsuarioDAO
     private int trabajadorId;
 
     @Override
@@ -40,7 +42,9 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
         btnTicketResuelto = findViewById(R.id.btnTicketResuelto);
 
         ticketDAO = new TicketDAO(this);
-        ticketList = ticketDAO.listarNoFinalizados(); // Filtrar sólo los tickets no finalizados
+        usuarioDAO = new UsuarioDAO(this); // Inicializar UsuarioDAO
+
+        ticketList = ticketDAO.listarNoFinalizados();
 
         ticketAdapter = new TicketAdapterTrabajador(ticketList);
         recyclerView.setAdapter(ticketAdapter);
@@ -70,9 +74,17 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
                 return;
             }
 
+            // Obtener el ID del técnico que resolvió el ticket
+            int tecnicoId = ticketSeleccionado.getIdTecnico();
+
+            // Incrementar la marca del técnico
+            usuarioDAO.incrementarFallasTecnico(tecnicoId);
+
+            // Cambiar el estado del ticket a REABIERTO
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.REABIERTO);
-            ticketDAO.actualizar(ticketSeleccionado); // Actualizar el estado del ticket en la base de datos
-            Toast.makeText(this, "El ticket ha sido reabierto", Toast.LENGTH_SHORT).show();
+            ticketDAO.actualizar(ticketSeleccionado);
+
+            Toast.makeText(this, "El ticket ha sido reabierto y se ha registrado una marca al técnico.", Toast.LENGTH_SHORT).show();
             actualizarListaTickets();
         });
 
@@ -89,7 +101,7 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
             }
 
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.FINALIZADO);
-            ticketDAO.actualizar(ticketSeleccionado); // Actualizar el estado del ticket en la base de datos
+            ticketDAO.actualizar(ticketSeleccionado);
             Toast.makeText(this, "El ticket ha sido marcado como finalizado", Toast.LENGTH_SHORT).show();
             actualizarListaTickets();
         });
@@ -101,12 +113,10 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-
-    // Método para actualizar la lista de tickets después de una acción
     private void actualizarListaTickets() {
         ticketList.clear();
-        ticketList.addAll(ticketDAO.listarNoFinalizados()); // Volver a cargar la lista actualizada
-        ticketAdapter.notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
+        ticketList.addAll(ticketDAO.listarNoFinalizados());
+        ticketAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -114,17 +124,13 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            // Volver a cargar la lista de tickets
-            ticketList = ticketDAO.listarNoFinalizados(); // Obtener tickets de tu base de datos
+            ticketList = ticketDAO.listarNoFinalizados();
             ticketAdapter = new TicketAdapterTrabajador(ticketList);
             recyclerView.setAdapter(ticketAdapter);
 
-            // Reestablecer el listener para la selección de ticket
             ticketAdapter.setOnTicketClickListener(ticket -> {
                 Toast.makeText(this, "Ticket seleccionado: " + ticket.getTitulo(), Toast.LENGTH_SHORT).show();
             });
         }
     }
 }
-
-

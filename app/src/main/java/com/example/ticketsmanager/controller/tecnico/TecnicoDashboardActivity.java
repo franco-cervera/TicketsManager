@@ -12,12 +12,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ticketsmanager.R;
+import com.example.ticketsmanager.controller.Admin.GestionTicketsActivity;
 import com.example.ticketsmanager.controller.trabajador.GestionTicketTrabajadorActivity;
 import com.example.ticketsmanager.controller.trabajador.TrabajadorDashboardActivity;
 
 public class TecnicoDashboardActivity extends AppCompatActivity {
 
-    private CardView cardGestionTickets;
+    private CardView cardGestionTickets,cardMarcasyFallas;
     private int tecnicoId;
 
     @Override
@@ -26,6 +27,7 @@ public class TecnicoDashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tecnico_dashboard);
 
         cardGestionTickets = findViewById(R.id.cardGestionTickets);
+        cardMarcasyFallas = findViewById(R.id.cardMarcasyFallas);
 
         tecnicoId = getIntent().getIntExtra("id_tecnico", -1);
 
@@ -33,7 +35,16 @@ public class TecnicoDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TecnicoDashboardActivity.this, GestionTicketTecnicoActivity.class);
-                intent.putExtra("id_tecnico", tecnicoId); // Pasar ID del Tecnico
+                intent.putExtra("id_tecnico", tecnicoId);
+                startActivity(intent);
+            }
+        });
+
+        cardMarcasyFallas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TecnicoDashboardActivity.this, MarcasFallasTecActivity.class);
+                intent.putExtra("id_tecnico", tecnicoId);
                 startActivity(intent);
             }
         });
