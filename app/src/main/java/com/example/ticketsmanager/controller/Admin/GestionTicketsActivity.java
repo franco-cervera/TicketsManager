@@ -69,7 +69,6 @@ public class GestionTicketsActivity extends AppCompatActivity {
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.REABIERTO);
             ticketDAO.actualizar(ticketSeleccionado);
 
-            Toast.makeText(this, "El ticket ha sido reabierto y se ha registrado una marca al técnico.", Toast.LENGTH_SHORT).show();
             actualizarListaTickets();
         });
     }

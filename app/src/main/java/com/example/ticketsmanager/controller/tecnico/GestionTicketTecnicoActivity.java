@@ -62,13 +62,15 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
                         && (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.NO_ATENDIDO
                         || ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO)) {
 
-                    ticketSeleccionado.setEstado(Ticket.EstadoTicket.ATENDIDO);
-                    ticketSeleccionado.setIdTecnico(tecnicoId);
-
+                    // Cambiar el estado del ticket según su estado actual
                     if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
-                        usuarioDAO.incrementarFallasTecnico(tecnicoId);
+                        ticketSeleccionado.setEstado(Ticket.EstadoTicket.ATENDIDO_REABIERTO);
+                        usuarioDAO.incrementarFallasTecnico(tecnicoId); // Incrementar falla si estaba reabierto
+                    } else {
+                        ticketSeleccionado.setEstado(Ticket.EstadoTicket.ATENDIDO);
                     }
 
+                    ticketSeleccionado.setIdTecnico(tecnicoId);
                     ticketDAO.actualizar(ticketSeleccionado);
                     ticketsAtendidosCount++;
                     actualizarListaTickets();
@@ -85,15 +87,14 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
 
         btnFinalizarTicket.setOnClickListener(v -> {
             if (ticketSeleccionado != null &&
-                    (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO || ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) &&
+                    (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO || ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO_REABIERTO) &&
                     tecnicoId == ticketSeleccionado.getIdTecnico()) {
 
-                // Si el ticket estaba REABIERTO, gestionar la resolución ANTES de cambiar el estado
-                if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
-                    usuarioDAO.gestionarResolucionTicketReabierto(tecnicoId, this); // Remover una falla si el técnico lo resolvió
+                if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO_REABIERTO) {
+                    ticketSeleccionado.setEstado(Ticket.EstadoTicket.RESUELTO_REABIERTO);
+                } else {
+                    ticketSeleccionado.setEstado(Ticket.EstadoTicket.RESUELTO);
                 }
-
-                ticketSeleccionado.setEstado(Ticket.EstadoTicket.RESUELTO);
 
                 ticketDAO.actualizar(ticketSeleccionado);
                 ticketsAtendidosCount--;
@@ -103,7 +104,6 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
                 Toast.makeText(this, "No puedes finalizar este ticket", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void actualizarListaTickets() {

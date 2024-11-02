@@ -13,10 +13,12 @@ public class Ticket {
     public enum EstadoTicket {
         NO_ATENDIDO,
         ATENDIDO,
+        ATENDIDO_REABIERTO,
         RESUELTO,
         FINALIZADO,
         REABIERTO,
-        RESUELTO_REABIERTO;
+        RESUELTO_REABIERTO,
+        FINALIZADO_REABIERTO;
 
         @Override
         public String toString() {
@@ -25,14 +27,19 @@ public class Ticket {
                     return "No Atendido";
                 case ATENDIDO:
                     return "Atendido";
+                case ATENDIDO_REABIERTO:
+                    return "Atendido-Reabierto";
                 case RESUELTO:
                     return "Resuelto";
-                case FINALIZADO:
-                    return "Finalizado";
-                case REABIERTO:
-                    return "Reabierto";
                 case RESUELTO_REABIERTO:
                     return "Resuelto-Reabierto";
+                case FINALIZADO:
+                    return "Finalizado";
+                case FINALIZADO_REABIERTO:
+                    return "Finalizado-Reabierto";
+                case REABIERTO:
+                    return "Reabierto";
+
                 default:
                     return super.toString();
             }

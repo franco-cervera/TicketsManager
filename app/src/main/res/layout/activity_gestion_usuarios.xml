@@ -57,7 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Agregar usuario"
-        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

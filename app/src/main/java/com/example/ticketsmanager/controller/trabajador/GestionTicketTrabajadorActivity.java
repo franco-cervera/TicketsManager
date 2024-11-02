@@ -96,16 +96,30 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
                 return;
             }
 
-            if (!ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO)) {
-                Toast.makeText(this, "Solo puedes marcar como resueltos los tickets en estado 'Resuelto'", Toast.LENGTH_SHORT).show();
+            // Verifica si el estado del ticket es 'RESUELTO' o 'RESUELTO_REABIERTO'
+            if (!ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO) &&
+                    !ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO_REABIERTO)) {
+                Toast.makeText(this, "Solo puedes marcar como finalizados los tickets en estado 'Resuelto' o 'Resuelto Reabierto'", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            Log.d("FinalizarTicket", "Estado del ticket antes de finalizar: " + ticketSeleccionado.getEstado());
+
+            // Si el ticket estaba en estado RESUELTO_REABIERTO, gestionar la resolución
+            if (ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO_REABIERTO)) {
+                usuarioDAO.gestionarResolucionTicketReabierto(ticketSeleccionado.getIdTecnico(), getApplicationContext()); // Llama al método para gestionar la resolución
+                Log.d("FinalizarTicket", "ID del técnico: " + ticketSeleccionado.getIdTecnico());
+
+            }
+
+            // Cambiar el estado del ticket a FINALIZADO
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.FINALIZADO);
             ticketDAO.actualizar(ticketSeleccionado);
             Toast.makeText(this, "El ticket ha sido marcado como finalizado", Toast.LENGTH_SHORT).show();
             actualizarListaTickets();
         });
+
+
     }
 
     private void agregarTicket() {
