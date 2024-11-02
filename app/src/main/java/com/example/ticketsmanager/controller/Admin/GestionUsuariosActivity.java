@@ -54,10 +54,15 @@ public class GestionUsuariosActivity extends AppCompatActivity {
         // Manejo de clic para bloquear usuario
         btnBloquearUsuario.setOnClickListener(v -> {
             if (usuarioSeleccionado != null) {
-                usuarioDAO.bloquearUsuario(usuarioSeleccionado.getId());
-                usuarioSeleccionado.setBloqueado(true);
-                usuariosAdapter.notifyDataSetChanged();
-                Toast.makeText(this, "Usuario bloqueado", Toast.LENGTH_SHORT).show();
+                // Verifica si el usuario seleccionado es un Administrador
+                if (usuarioSeleccionado.getTipo().equals("Administrador")) {
+                    Toast.makeText(this, "No puedes bloquear a un Administrador", Toast.LENGTH_SHORT).show();
+                } else {
+                    usuarioDAO.bloquearUsuario(usuarioSeleccionado.getId());
+                    usuarioSeleccionado.setBloqueado(true);
+                    usuariosAdapter.notifyDataSetChanged();
+                    Toast.makeText(this, "Usuario bloqueado", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, "Selecciona un usuario para bloquear", Toast.LENGTH_SHORT).show();
             }

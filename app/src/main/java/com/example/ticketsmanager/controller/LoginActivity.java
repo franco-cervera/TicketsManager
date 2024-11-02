@@ -25,9 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView logo;
     private TextView txtUsuario, txtContraseña;
     private TextInputEditText edtID, edtPassword;
-    private Button btnLogin;
+    private Button btnLogin, btnCambiarPassword, btnMensaje;
     private String userType;
-    private Button btnCambiarPassword;
     private UsuarioDAO usuarioDAO;
 
     @Override
@@ -76,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         edtID = (TextInputEditText) inputLayoutID.getEditText();
         edtPassword = (TextInputEditText) inputLayoutPassword.getEditText();
 
+        btnMensaje = findViewById(R.id.btnMensaje);
         btnLogin = findViewById(R.id.btnLogin);
         btnCambiarPassword = findViewById(R.id.btnChangePassword);
 
@@ -84,6 +84,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, CambiarPassword.class);
+                startActivity(intent);
+            }
+        });
+
+        btnMensaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, MensajesAdminActivity.class);
                 startActivity(intent);
             }
         });

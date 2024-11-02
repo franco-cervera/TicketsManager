@@ -44,7 +44,14 @@
     <string name="edt_newPass">Ingrese la nueva password</string>
     <string name="edt_ConfirmPass">Confirme nueva password</string>
 
-    <!--SELECCION-->
+
+    <!--MENSAJE-->
+    <string-array name="asunto_mensaje">
+        <item>Reabrir ticket</item>
+        <item>Desbloquear acceso</item>
+        <item>Blanquear contraseña</item>
+    </string-array>
+
 
     <!--MAS DATOS-->
 </resources>

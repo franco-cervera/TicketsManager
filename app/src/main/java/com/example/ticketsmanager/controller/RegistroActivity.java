@@ -62,11 +62,12 @@ public class RegistroActivity extends AppCompatActivity {
             String[] tiposUsuario = getResources().getStringArray(R.array.roles_array);
 
             // Crear un adaptador para el Spinner
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tiposUsuario);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, tiposUsuario);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // Establecer el layout para la lista desplegable
 
             // Asignar el adaptador al Spinner
             spinner.setAdapter(adapter);
+
         }
     }
 

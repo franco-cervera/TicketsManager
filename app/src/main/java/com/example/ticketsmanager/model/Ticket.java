@@ -15,7 +15,8 @@ public class Ticket {
         ATENDIDO,
         RESUELTO,
         FINALIZADO,
-        REABIERTO;
+        REABIERTO,
+        RESUELTO_REABIERTO;
 
         @Override
         public String toString() {
@@ -30,6 +31,8 @@ public class Ticket {
                     return "Finalizado";
                 case REABIERTO:
                     return "Reabierto";
+                case RESUELTO_REABIERTO:
+                    return "Resuelto-Reabierto";
                 default:
                     return super.toString();
             }

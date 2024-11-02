@@ -5,27 +5,17 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <Button
-        android:id="@+id/btnAgregarTicket"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Agregar Ticket"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTickets"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnAgregarTicket"
         app:layout_constraintBottom_toTopOf="@+id/bottomPanel"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_ticket" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_ticket_adm" />
 
     <LinearLayout
         android:id="@+id/bottomPanel"
@@ -38,18 +28,12 @@
         android:layout_marginBottom="16dp">
 
         <Button
-            android:id="@+id/btnEliminarTicket"
+            android:id="@+id/btnReabrirTicket"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Eliminar Ticket"
+            android:text="Reabrir Ticket"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btnActualizarTicket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Actualizar Ticket"
-            android:layout_weight="1" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

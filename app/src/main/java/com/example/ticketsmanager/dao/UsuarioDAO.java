@@ -53,7 +53,9 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
                     cursor.getInt(cursor.getColumnIndexOrThrow("id")),
                     cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
                     cursor.getString(cursor.getColumnIndexOrThrow("password")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+                    cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("marcas")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("fallas"))
             );
 
             // Recupera el estado de bloqueado y lo establece en el objeto Usuario
@@ -101,11 +103,12 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
                         cursor.getInt(cursor.getColumnIndexOrThrow("id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+                        cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("marcas")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("fallas"))
                 );
 
-                // Recupera el estado de bloqueado y lo establece en el objeto Usuario
-                usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1); // Asegúrate de que aquí se lea el estado correctamente
+                usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1);
 
                 usuarios.add(usuario);
             } while (cursor.moveToNext());
@@ -119,24 +122,56 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
 
     public Usuario listarPorTipo(String tipo) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM usuarios WHERE tipo = ?";
+        String query = "SELECT * FROM usuarios WHERE tipo = ? LIMIT 1"; // LIMIT 1 para obtener solo uno
         Cursor cursor = db.rawQuery(query, new String[]{tipo});
 
+        Usuario usuario = null; // Inicializa el usuario a null
+
         if (cursor != null && cursor.moveToFirst()) {
-            Usuario usuario = new Usuario(
+            usuario = new Usuario(
                     cursor.getInt(cursor.getColumnIndexOrThrow("id")),
                     cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
                     cursor.getString(cursor.getColumnIndexOrThrow("password")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+                    cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("marcas")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("fallas"))
             );
-            cursor.close();
-            db.close();
-            return usuario;
         }
-        cursor.close();
-        db.close();
-        return null; // Si no existe, retornar null
+
+        if (cursor != null) {
+            cursor.close(); // Asegúrate de cerrar el cursor
+        }
+        db.close(); // Cierra la base de datos
+        return usuario; // Devuelve el usuario encontrado o null
     }
+
+    public List<Usuario> listarTecnicos() {
+        List<Usuario> tecnicos = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM usuarios WHERE tipo = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"Tecnico"}); // Solo obtiene técnicos
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Usuario usuario = new Usuario(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("password")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("marcas")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("fallas"))
+                );
+
+                usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1);
+                tecnicos.add(usuario);
+            }
+            cursor.close(); // Asegúrate de cerrar el cursor
+        }
+        db.close(); // Cierra la base de datos
+        return tecnicos; // Devuelve la lista de técnicos
+    }
+
+
 
     public ResultadoValidacion validarCredenciales(String idUsuario, String password, String tipo) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -148,6 +183,9 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             String pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
             String tipoUsuario = cursor.getString(cursor.getColumnIndexOrThrow("tipo"));
             boolean bloqueado = cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1;
+            int fallas = cursor.getInt(cursor.getColumnIndexOrThrow("fallas"));
+            int marcas = cursor.getInt(cursor.getColumnIndexOrThrow("marcas"));
+
 
             // Verificar si el usuario está bloqueado
             if (bloqueado) {
@@ -156,8 +194,8 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
                 return new ResultadoValidacion(null, "Tu cuenta está bloqueada debido a 3 fallas."); // Mensaje específico
             }
 
-            Usuario usuario = new Usuario(id, cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), pass, tipoUsuario);
-            usuario.setBloqueado(bloqueado);
+            Usuario usuario = new Usuario(id, cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), pass, tipoUsuario, fallas, marcas);
+            usuario.setBloqueado(false);
 
             cursor.close();
             db.close();
@@ -253,13 +291,32 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
     }
 
     public void bloquearUsuario(int usuarioId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT tipo FROM usuarios WHERE id = ?", new String[]{String.valueOf(usuarioId)});
+        if (cursor != null && cursor.moveToFirst()) {
+            String tipoUsuario = cursor.getString(cursor.getColumnIndexOrThrow("tipo"));
+
+            if ("Administrador".equalsIgnoreCase(tipoUsuario)) {
+                cursor.close();
+                db.close();
+                return; // Salir del método sin hacer nada
+            }
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        // Proceder con el bloqueo solo si no es un Administrador
+        db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("bloqueado", true);
-
         db.update("usuarios", values, "id = ?", new String[]{String.valueOf(usuarioId)});
         db.close();
     }
+
 
     public void desbloquearUsuario(int usuarioId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -270,9 +327,64 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         db.close();
     }
 
+    public void gestionarRetornoTicket(int tecnicoId, Context context) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        try {
+            // Consulta para verificar el número de marcas y fallas
+            Cursor cursor = db.rawQuery("SELECT marcas, fallas FROM usuarios WHERE id = ?", new String[]{String.valueOf(tecnicoId)});
 
+            if (cursor != null && cursor.moveToFirst()) {
+                @SuppressLint("Range") int marcas = cursor.getInt(cursor.getColumnIndex("marcas"));
+                @SuppressLint("Range") int fallas = cursor.getInt(cursor.getColumnIndex("fallas"));
 
+                if (marcas > 0) {
+                    // Si tiene una marca, se borra la marca y se añade una falla
+                    Toast.makeText(context, "Se ha removido una marca y añadido una falla al técnico.", Toast.LENGTH_SHORT).show();
+                    limpiarMarcaTecnico(tecnicoId);
+                    incrementarFallasTecnico(tecnicoId);
+                } else {
+                    // Si no tiene marcas, se le añade una marca
+                    Toast.makeText(context, "Se ha añadido una marca al técnico.", Toast.LENGTH_SHORT).show();
+                    incrementarMarcasTecnico(tecnicoId);
+                }
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public void gestionarResolucionTicketReabierto(int tecnicoId, Context context) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            // Consulta para verificar el número de fallas
+            Cursor cursor = db.rawQuery("SELECT fallas FROM usuarios WHERE id = ?", new String[]{String.valueOf(tecnicoId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                @SuppressLint("Range") int fallas = cursor.getInt(cursor.getColumnIndex("fallas"));
+
+                if (fallas > 0) {
+                    // Si tiene fallas, se le limpia una falla
+                    Toast.makeText(context, "Se ha limpiado una falla al técnico.", Toast.LENGTH_SHORT).show();
+                    limpiarFallaTecnico(tecnicoId);
+                } else {
+                    // No hay fallas para limpiar
+                    Toast.makeText(context, "El técnico no tiene fallas para limpiar.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
 
 
 }

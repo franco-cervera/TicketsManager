@@ -17,7 +17,6 @@ public class TicketAdapterTecnico extends RecyclerView.Adapter<TicketAdapterTecn
 
     private List<Ticket> ticketList;
     private OnTicketClickListener onTicketClickListener;
-    private Ticket selectedTicket; // Mantiene la referencia del ticket seleccionado
 
     public TicketAdapterTecnico(List<Ticket> ticketList) {
         this.ticketList = ticketList;
@@ -37,7 +36,7 @@ public class TicketAdapterTecnico extends RecyclerView.Adapter<TicketAdapterTecn
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder holder, int position) {
         Ticket ticket = ticketList.get(position);
-        holder.bind(ticket, onTicketClickListener);
+        holder.bind(ticket);
     }
 
     @Override
@@ -47,22 +46,24 @@ public class TicketAdapterTecnico extends RecyclerView.Adapter<TicketAdapterTecn
 
     class TicketViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitulo, tvEstado;
+        TextView tvTitulo, tvEstado, tvDescripcion;
 
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
             tvEstado = itemView.findViewById(R.id.tvEstado);
+            tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
         }
 
-        public void bind(Ticket ticket, OnTicketClickListener listener) {
+        public void bind(Ticket ticket) {
             tvTitulo.setText(ticket.getTitulo());
             tvEstado.setText(ticket.getEstado().toString());
+            tvDescripcion.setText(ticket.getDescripcion()); // Asignar la descripción
 
-            // Configurar el clic en el elemento
+            // Configurar el clic en el ticket
             itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onTicketClick(ticket);
+                if (onTicketClickListener != null) {
+                    onTicketClickListener.onTicketClick(ticket);
                 }
             });
         }
@@ -77,5 +78,4 @@ public class TicketAdapterTecnico extends RecyclerView.Adapter<TicketAdapterTecn
         this.ticketList = newTicketList;
         notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
     }
-
 }

@@ -6,22 +6,28 @@ public class Usuario {
     protected String password;
     protected String tipo;
     protected boolean bloqueado;
+    protected int marcas; // Nuevos atributos
+    protected int fallas; // Nuevos atributos
 
-    // Constructor sin ID (para el registro)
+    // Constructor sin id ni marcas y fallas (para el registro)
     public Usuario(String nombreUsuario, String password, String tipo) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.tipo = tipo;
         this.bloqueado = false;
+        this.marcas = 0; // Inicializar a 0
+        this.fallas = 0; // Inicializar a 0
     }
 
     // Constructor con ID
-    public Usuario(int id, String nombreUsuario, String password, String tipo) {
+    public Usuario(int id, String nombreUsuario, String password, String tipo, int marcas, int fallas) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.tipo = tipo;
         this.bloqueado = false;
+        this.marcas = marcas;
+        this.fallas = fallas;
     }
 
     // Métodos Getters y Setters
@@ -67,5 +73,21 @@ public class Usuario {
 
     public void cambiarPassword(String nuevaPassword) {
         this.password = nuevaPassword;
+    }
+
+    public int getMarcas() {
+        return marcas;
+    }
+
+    public void setMarcas(int marcas) {
+        this.marcas = marcas;
+    }
+
+    public int getFallas() {
+        return fallas;
+    }
+
+    public void setFallas(int fallas) {
+        this.fallas = fallas;
     }
 }

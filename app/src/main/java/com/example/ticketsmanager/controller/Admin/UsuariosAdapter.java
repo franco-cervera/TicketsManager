@@ -61,11 +61,9 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.Usuari
             txtTipoUsuario.setText(usuario.getTipo());
             txtIdUsuario.setText("ID: " + String.valueOf(usuario.getId()));
 
-            // Mostrar el estado de bloqueo
             txtEstadoBloqueo.setText(usuario.isBloqueado() ? "Bloqueado" : "Activo");
 
 
-            // Configurar el clic en el elemento
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onUsuarioClick(usuario);

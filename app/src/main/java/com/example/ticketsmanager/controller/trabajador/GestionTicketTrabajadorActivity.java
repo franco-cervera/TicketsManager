@@ -1,5 +1,6 @@
 package com.example.ticketsmanager.controller.trabajador;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -84,7 +85,7 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.REABIERTO);
             ticketDAO.actualizar(ticketSeleccionado);
 
-            Toast.makeText(this, "El ticket ha sido reabierto y se ha registrado una marca al técnico.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El ticket ha sido reabierto y se ha registrado una falla al técnico.", Toast.LENGTH_SHORT).show();
             actualizarListaTickets();
         });
 
@@ -119,6 +120,8 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
         ticketAdapter.notifyDataSetChanged();
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -133,4 +136,6 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
             });
         }
     }
+
+
 }

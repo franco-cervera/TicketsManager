@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Agregar Ticket"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,14 +42,18 @@
             android:id="@+id/btnReabrirTicket"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/red"
             android:text="Reabrir Ticket"
             android:layout_weight="1" />
 
         <Button
             android:id="@+id/btnTicketResuelto"
             android:layout_width="0dp"
+            android:backgroundTint="@color/green"
             android:layout_height="wrap_content"
-            android:text="Finalizar Ticket"
+            android:text="Ticket Resuelto"
+            android:textColor="@color/white"
             android:layout_weight="1" />
     </LinearLayout>
 

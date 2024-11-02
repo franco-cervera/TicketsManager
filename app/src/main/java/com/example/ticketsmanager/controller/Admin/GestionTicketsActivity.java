@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticketsmanager.R;
 import com.example.ticketsmanager.controller.trabajador.AgregarTicketActivity;
-import com.example.ticketsmanager.controller.trabajador.TicketAdapterTrabajador;
+import com.example.ticketsmanager.controller.Admin.TicketAdapterAdmin;
 import com.example.ticketsmanager.dao.TicketDAO;
+import com.example.ticketsmanager.dao.UsuarioDAO;
 import com.example.ticketsmanager.model.Ticket;
 
 import java.util.List;
@@ -20,11 +21,12 @@ import java.util.List;
 public class GestionTicketsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private TicketAdapterTrabajador ticketAdapter;
+    private TicketAdapterAdmin ticketAdapter;
     private List<Ticket> ticketList;
-    private Button btnAgregarTicket, btnActualizarTicket, btnEliminarTicket;
+    private Button btnReabrirTicket;
     private Ticket ticketSeleccionado; // Mantiene referencia al ticket seleccionado
-    private TicketDAO ticketDAO; // Inicializa el DAO
+    private TicketDAO ticketDAO;
+    private UsuarioDAO usuarioDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +34,15 @@ public class GestionTicketsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gestion_tickets);
 
         recyclerView = findViewById(R.id.recyclerViewTickets);
-        btnAgregarTicket = findViewById(R.id.btnAgregarTicket);
-        btnActualizarTicket = findViewById(R.id.btnActualizarTicket);
-        btnEliminarTicket = findViewById(R.id.btnEliminarTicket);
+        btnReabrirTicket = findViewById(R.id.btnReabrirTicket);
 
         // Inicializa tu lista de tickets
         ticketDAO = new TicketDAO(this);
         ticketList = ticketDAO.listarTodos();
+        usuarioDAO = new UsuarioDAO(this);
 
         // Configurar el RecyclerView
-        ticketAdapter = new TicketAdapterTrabajador(ticketList);
+        ticketAdapter = new TicketAdapterAdmin(ticketList);
         recyclerView.setAdapter(ticketAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -51,43 +52,26 @@ public class GestionTicketsActivity extends AppCompatActivity {
             Toast.makeText(this, "Ticket seleccionado: " + ticket.getTitulo(), Toast.LENGTH_SHORT).show();
         });
 
-        // Manejo de clic para agregar ticket
-        btnAgregarTicket.setOnClickListener(v -> {
-            Intent intent = new Intent(GestionTicketsActivity.this, AgregarTicketActivity.class);
-            startActivityForResult(intent, 1);
-        });
-
-        // Manejo de clic para actualizar ticket
-        btnActualizarTicket.setOnClickListener(v -> {
-            if (ticketSeleccionado != null) {
-                Intent intent = new Intent(GestionTicketsActivity.this, ActualizarTicketActivity.class);
-                intent.putExtra("TICKET_ID", ticketSeleccionado.getId()); // Pasar el ID del ticket
-                startActivityForResult(intent, 2); // Código de solicitud para actualización
-            } else {
-                Toast.makeText(this, "Selecciona un ticket para actualizar", Toast.LENGTH_SHORT).show();
+        // Manejo de clic para reabrir ticket
+        btnReabrirTicket.setOnClickListener(v -> {
+            if (ticketSeleccionado == null) {
+                Toast.makeText(this, "Por favor, selecciona un ticket primero", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Obtener el ID del técnico que resolvió el ticket
+            int tecnicoId = ticketSeleccionado.getIdTecnico();
+
+            // Incrementar la marca del técnico
+            usuarioDAO.gestionarRetornoTicket(tecnicoId, this);
+
+            // Cambiar el estado del ticket a REABIERTO
+            ticketSeleccionado.setEstado(Ticket.EstadoTicket.REABIERTO);
+            ticketDAO.actualizar(ticketSeleccionado);
+
+            Toast.makeText(this, "El ticket ha sido reabierto y se ha registrado una marca al técnico.", Toast.LENGTH_SHORT).show();
+            actualizarListaTickets();
         });
-
-
-        // Manejo de clic para eliminar ticket
-        btnEliminarTicket.setOnClickListener(v -> {
-            if (ticketSeleccionado != null) {
-                int ticketId = ticketSeleccionado.getId(); // Obtener el ID del ticket
-                // Eliminar el ticket de la base de datos
-                ticketDAO.eliminar(ticketId);
-                // Eliminar de la lista
-                ticketList.remove(ticketSeleccionado); // Eliminar el ticket seleccionado de la lista
-                // Actualizar el adaptador
-                ticketAdapter.updateData(ticketList); // Actualizar el adaptador
-                // Mostrar mensaje de éxito
-                Toast.makeText(this, "Ticket eliminado", Toast.LENGTH_SHORT).show();
-                ticketSeleccionado = null; // Limpiar selección
-            } else {
-                Toast.makeText(this, "Selecciona un ticket para eliminar", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
     }
 
     @Override
@@ -103,5 +87,11 @@ public class GestionTicketsActivity extends AppCompatActivity {
             ticketList = ticketDAO.listarTodos();
             ticketAdapter.updateData(ticketList);
         }
+    }
+
+    private void actualizarListaTickets() {
+        ticketList.clear();
+        ticketList.addAll(ticketDAO.listarNoFinalizados());
+        ticketAdapter.notifyDataSetChanged();
     }
 }

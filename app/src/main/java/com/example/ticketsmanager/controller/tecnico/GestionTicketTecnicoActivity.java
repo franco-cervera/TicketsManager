@@ -23,8 +23,8 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
     private TicketAdapterTrabajador ticketAdapter;
     private List<Ticket> ticketList;
     private Button btnTomarTicket, btnFinalizarTicket;
-    private Ticket ticketSeleccionado; // Mantiene referencia al ticket seleccionado
-    private TicketDAO ticketDAO; // Inicializa el DAO
+    private Ticket ticketSeleccionado;
+    private TicketDAO ticketDAO;
     private int ticketsAtendidosCount, tecnicoId;
 
     @Override
@@ -41,14 +41,12 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
 
         ticketDAO = new TicketDAO(this);
 
-        // Filtrar para que el técnico solo vea tickets no finalizados y que no está atendiendo
         ticketList = ticketDAO.listarNoFinalizados();
 
         ticketAdapter = new TicketAdapterTrabajador(ticketList);
         recyclerView.setAdapter(ticketAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Establecer el listener para la selección de ticket
         ticketAdapter.setOnTicketClickListener(ticket -> {
             ticketSeleccionado = ticket;
             Toast.makeText(this, "Ticket seleccionado: " + ticket.getTitulo(), Toast.LENGTH_SHORT).show();
@@ -68,7 +66,7 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
                     ticketSeleccionado.setIdTecnico(tecnicoId);
 
                     if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
-                        usuarioDAO.incrementarFallasTecnico(tecnicoId); // Asignar una falla si estaba en REABIERTO
+                        usuarioDAO.incrementarFallasTecnico(tecnicoId);
                     }
 
                     ticketDAO.actualizar(ticketSeleccionado);
@@ -86,28 +84,31 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
         });
 
         btnFinalizarTicket.setOnClickListener(v -> {
-            if (ticketSeleccionado != null && ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO && tecnicoId == ticketSeleccionado.getIdTecnico()) {
-                ticketSeleccionado.setEstado(Ticket.EstadoTicket.RESUELTO);
+            if (ticketSeleccionado != null &&
+                    (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.ATENDIDO || ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) &&
+                    tecnicoId == ticketSeleccionado.getIdTecnico()) {
 
+                // Si el ticket estaba REABIERTO, gestionar la resolución ANTES de cambiar el estado
                 if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
-                    usuarioDAO.limpiarFallaTecnico(tecnicoId); // Remover una falla si el técnico lo resolvió
+                    usuarioDAO.gestionarResolucionTicketReabierto(tecnicoId, this); // Remover una falla si el técnico lo resolvió
                 }
+
+                ticketSeleccionado.setEstado(Ticket.EstadoTicket.RESUELTO);
 
                 ticketDAO.actualizar(ticketSeleccionado);
                 ticketsAtendidosCount--;
                 actualizarListaTickets();
-                Toast.makeText(this, "Ticket finalizado: " + ticketSeleccionado.getTitulo(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Ticket Finalizado: " + ticketSeleccionado.getTitulo(), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "No puedes finalizar este ticket", Toast.LENGTH_SHORT).show();
             }
         });
 
-
     }
 
-    // Método para actualizar la lista de tickets después de tomar o finalizar uno
     private void actualizarListaTickets() {
-        ticketList = ticketDAO.listarNoFinalizados(); // Actualizar la lista de tickets
-        ticketAdapter.notifyDataSetChanged();  // Notificar al adapter que la lista cambió
+        ticketList = ticketDAO.listarNoFinalizados();
+        ticketAdapter.notifyDataSetChanged();
     }
+
 }

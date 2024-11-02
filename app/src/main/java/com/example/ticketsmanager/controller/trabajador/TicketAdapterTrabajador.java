@@ -17,7 +17,6 @@ public class TicketAdapterTrabajador extends RecyclerView.Adapter<TicketAdapterT
 
     private List<Ticket> ticketList;
     private OnTicketClickListener onTicketClickListener;
-    private Ticket selectedTicket; // Mantiene la referencia del ticket seleccionado
 
     public TicketAdapterTrabajador(List<Ticket> ticketList) {
         this.ticketList = ticketList;
@@ -37,7 +36,7 @@ public class TicketAdapterTrabajador extends RecyclerView.Adapter<TicketAdapterT
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder holder, int position) {
         Ticket ticket = ticketList.get(position);
-        holder.bind(ticket, onTicketClickListener);
+        holder.bind(ticket);
     }
 
     @Override
@@ -47,16 +46,17 @@ public class TicketAdapterTrabajador extends RecyclerView.Adapter<TicketAdapterT
 
     class TicketViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitulo, tvEstado, tvTecnico;
+        TextView tvTitulo, tvEstado, tvTecnico, tvDescripcion;
 
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
             tvEstado = itemView.findViewById(R.id.tvEstado);
             tvTecnico = itemView.findViewById(R.id.tvTecnico);
+            tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
         }
 
-        public void bind(Ticket ticket, OnTicketClickListener listener) {
+        public void bind(Ticket ticket) {
             tvTitulo.setText(ticket.getTitulo());
             tvEstado.setText(ticket.getEstado().toString());
 
@@ -66,10 +66,12 @@ public class TicketAdapterTrabajador extends RecyclerView.Adapter<TicketAdapterT
                 tvTecnico.setText("Sin técnico asignado");
             }
 
+            tvDescripcion.setText(ticket.getDescripcion());
+
             // Configurar el clic en el elemento
             itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onTicketClick(ticket);
+                if (onTicketClickListener != null) {
+                    onTicketClickListener.onTicketClick(ticket);
                 }
             });
         }
@@ -82,7 +84,6 @@ public class TicketAdapterTrabajador extends RecyclerView.Adapter<TicketAdapterT
 
     public void updateData(List<Ticket> newTicketList) {
         this.ticketList = newTicketList;
-        notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
+        notifyDataSetChanged();
     }
-
 }

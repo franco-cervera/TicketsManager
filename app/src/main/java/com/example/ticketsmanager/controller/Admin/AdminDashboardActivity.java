@@ -11,24 +11,24 @@ import com.example.ticketsmanager.R;
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
-    private CardView cardGestionUsuarios, cardGestionTickets, cardGestionTecnicos, cardGestionPassword;
+    private CardView cardGestionUsuarios, cardGestionTickets, cardGestionTecnicos, cardGestionPassword, cardGestionMensajes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
-        // Inicializar tarjetas
+
         cardGestionUsuarios = findViewById(R.id.cardGestionUsuarios);
         cardGestionTickets = findViewById(R.id.cardGestionTickets);
         cardGestionTecnicos = findViewById(R.id.cardGestionTecnicos);
         cardGestionPassword = findViewById(R.id.cardGestionPassword);
+        cardGestionMensajes = findViewById(R.id.cardGestionMensajes);
 
-        // Configurar eventos de clic para cada tarjeta
+
         cardGestionUsuarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ir a la actividad de gestión de usuarios
                 Intent intent = new Intent(AdminDashboardActivity.this, GestionUsuariosActivity.class);
                 startActivity(intent);
             }
@@ -37,7 +37,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         cardGestionTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ir a la actividad de gestión de tickets
                 Intent intent = new Intent(AdminDashboardActivity.this, GestionTicketsActivity.class);
                 startActivity(intent);
             }
@@ -46,8 +45,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         cardGestionTecnicos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Ir a la actividad de gestión de técnicos
-                Intent intent = new Intent(AdminDashboardActivity.this, GestionTecnicosActivity.class);
+                Intent intent = new Intent(AdminDashboardActivity.this, MarcasFallasAdmActivity.class);
                 startActivity(intent);
             }
         });
@@ -56,6 +54,22 @@ public class AdminDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminDashboardActivity.this, GestionPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cardGestionUsuarios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminDashboardActivity.this, GestionUsuariosActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cardGestionMensajes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminDashboardActivity.this, GestionMensajesActivity.class);
                 startActivity(intent);
             }
         });

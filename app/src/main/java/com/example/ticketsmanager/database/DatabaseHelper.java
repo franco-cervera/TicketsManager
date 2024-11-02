@@ -8,18 +8,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Nombre y versión de la base de datos
-    private static final String DATABASE_NAME = "tickets_manager.db";
-    private static final int DATABASE_VERSION = 3;
 
-    // Constructor
+    private static final String DATABASE_NAME = "tickets_manager.db";
+    private static final int DATABASE_VERSION = 4;
+
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Crear tabla de usuarios
         String createUsuariosTable = "CREATE TABLE usuarios (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nombreUsuario TEXT NOT NULL," +
@@ -30,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "fallas INT NOT NULL" +
                 ");";
 
-        // Crear tabla de tickets
+
         String createTicketsTable = "CREATE TABLE tickets (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "titulo TEXT NOT NULL," +
@@ -42,18 +41,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (id_tecnico) REFERENCES usuarios(id)" +
                 ");";
 
+
+        String createMensajesTable = "CREATE TABLE mensajes (" +
+                "id_mensaje INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "id_tecnico INTEGER NOT NULL," +
+                "asunto TEXT NOT NULL," +
+                "mensaje TEXT NOT NULL," +
+                "estado TEXT NOT NULL CHECK (estado IN ('leído', 'no leído'))," +
+                "FOREIGN KEY (id_tecnico) REFERENCES usuarios(id)" +
+                ");";
+
+
         db.execSQL(createUsuariosTable);
         db.execSQL(createTicketsTable);
+        db.execSQL(createMensajesTable);
+
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 3) {
-            // Agregar las columnas fallas y marcas en la tabla usuarios
-            db.execSQL("ALTER TABLE usuarios ADD COLUMN fallas INTEGER DEFAULT 0");
-            db.execSQL("ALTER TABLE usuarios ADD COLUMN marcas INTEGER DEFAULT 0");
+        if (oldVersion < 4) {
+            String createMensajesTable = "CREATE TABLE mensajes (" +
+                    "id_mensaje INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id_tecnico INTEGER NOT NULL," +
+                    "asunto TEXT NOT NULL," +
+                    "mensaje TEXT NOT NULL," +
+                    "estado TEXT NOT NULL CHECK (estado IN ('leído', 'no leído'))," +
+                    "FOREIGN KEY (id_tecnico) REFERENCES usuarios(id)" +
+                    ");";
+            db.execSQL(createMensajesTable);
         }
     }
+
     /*
     PARA CUANDO TODO ESTE LISTO, INCREMENTAR 1 VERSION A LA BD Y EJECUTAR
     @Override
@@ -95,6 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update("usuarios", values, "id = ?", new String[]{String.valueOf(userId)});
         db.close();
     }
+
 
 
 }

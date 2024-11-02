@@ -15,6 +15,18 @@
         android:theme="@style/Theme.TicketsManager"
         tools:targetApi="31">
         <activity
+            android:name=".controller.Admin.GestionMensajesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.MensajesAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.Admin.MarcasFallasAdmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MarcasFallasAdm"
+            android:exported="false" />
+        <activity
             android:name=".controller.tecnico.MarcasFallasTecActivity"
             android:exported="false" />
         <activity
