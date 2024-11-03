@@ -18,17 +18,16 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class RegistroActivity extends AppCompatActivity {
 
-    private TextInputEditText edtUsername; // Nombre de usuario
-    private Spinner spinner; // Tipo de usuario
+    private TextInputEditText edtUsername;
+    private Spinner spinner;
     private UsuarioDAO usuarioDAO;
-    private boolean soloAdmin; // Variable para verificar si solo se permite registrar un administrador
+    private boolean soloAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        // Inicializar los componentes de la interfaz
         TextInputLayout layoutUsername = findViewById(R.id.edtID_registro);
 
         edtUsername = (TextInputEditText) layoutUsername.getEditText();
@@ -36,16 +35,13 @@ public class RegistroActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         Button btnRegister = findViewById(R.id.btnRegistro_registro);
 
-        // Inicializar el DAO
         usuarioDAO = new UsuarioDAO(this);
 
         // Verificar si se permite solo registrar un administrador
         soloAdmin = getIntent().getBooleanExtra("solo_admin", false);
 
-        // Configurar el Spinner
         setupSpinner();
 
-        // Establecer el listener del botón de registro
         btnRegister.setOnClickListener(this::registerUser);
     }
 
@@ -72,19 +68,18 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void registerUser(View view) {
-        String username = edtUsername.getText().toString().trim(); // Obtener nombre de usuario
-        String tipo = soloAdmin ? "Administrador" : spinner.getSelectedItem().toString(); // Obtener tipo de usuario
+        String username = edtUsername.getText().toString().trim();
+        String tipo = soloAdmin ? "Administrador" : spinner.getSelectedItem().toString();
 
         if (username.isEmpty()) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Crear un nuevo usuario sin ID
-        Usuario newUser = new Usuario(username, "", tipo); // Usa el constructor adecuado
+        Usuario newUser = new Usuario(username, "", tipo);
 
         // Verificar si el usuario ya existe
-        if (usuarioDAO.existeUsuario(username)) { // Debes implementar este método en UsuarioDAO
+        if (usuarioDAO.existeUsuario(username)) {
             Toast.makeText(this, "El usuario ya existe", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -92,9 +87,9 @@ public class RegistroActivity extends AppCompatActivity {
         // Registrar el usuario en la base de datos
         usuarioDAO.crear(newUser);
 
-        // Mostrar un mensaje de éxito y regresar a la actividad anterior
         Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
-        finish(); // Regresar a la actividad anterior
+        finish();
+
     }
 }

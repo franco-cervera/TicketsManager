@@ -26,7 +26,7 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
     private Button btnAgregarTicket, btnReabrirTicket, btnTicketResuelto;
     private Ticket ticketSeleccionado;
     private TicketDAO ticketDAO;
-    private UsuarioDAO usuarioDAO; // Agregar UsuarioDAO
+    private UsuarioDAO usuarioDAO;
     private int trabajadorId;
 
     @Override
@@ -43,7 +43,7 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
         btnTicketResuelto = findViewById(R.id.btnTicketResuelto);
 
         ticketDAO = new TicketDAO(this);
-        usuarioDAO = new UsuarioDAO(this); // Inicializar UsuarioDAO
+        usuarioDAO = new UsuarioDAO(this);
 
         ticketList = ticketDAO.listarNoFinalizados();
 
@@ -51,19 +51,16 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
         recyclerView.setAdapter(ticketAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Establecer el listener para la selección de ticket
         ticketAdapter.setOnTicketClickListener(ticket -> {
             ticketSeleccionado = ticket;
             Toast.makeText(this, "Ticket seleccionado: " + ticket.getTitulo(), Toast.LENGTH_SHORT).show();
         });
 
-        // Manejo de clic para agregar ticket
         btnAgregarTicket.setOnClickListener(v -> {
             agregarTicket();
             actualizarListaTickets();
         });
 
-        // Manejo de clic para reabrir ticket
         btnReabrirTicket.setOnClickListener(v -> {
             if (ticketSeleccionado == null) {
                 Toast.makeText(this, "Por favor, selecciona un ticket primero", Toast.LENGTH_SHORT).show();
@@ -75,13 +72,10 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
                 return;
             }
 
-            // Obtener el ID del técnico que resolvió el ticket
             int tecnicoId = ticketSeleccionado.getIdTecnico();
 
-            // Incrementar la marca del técnico
             usuarioDAO.incrementarFallasTecnico(tecnicoId);
 
-            // Cambiar el estado del ticket a REABIERTO
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.REABIERTO);
             ticketDAO.actualizar(ticketSeleccionado);
 
@@ -89,14 +83,13 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
             actualizarListaTickets();
         });
 
-        // Manejo de clic para marcar un ticket como resuelto
+
         btnTicketResuelto.setOnClickListener(v -> {
             if (ticketSeleccionado == null) {
                 Toast.makeText(this, "Por favor, selecciona un ticket primero", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Verifica si el estado del ticket es 'RESUELTO' o 'RESUELTO_REABIERTO'
             if (!ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO) &&
                     !ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO_REABIERTO)) {
                 Toast.makeText(this, "Solo puedes marcar como finalizados los tickets en estado 'Resuelto' o 'Resuelto Reabierto'", Toast.LENGTH_SHORT).show();
@@ -105,14 +98,12 @@ public class GestionTicketTrabajadorActivity extends AppCompatActivity {
 
             Log.d("FinalizarTicket", "Estado del ticket antes de finalizar: " + ticketSeleccionado.getEstado());
 
-            // Si el ticket estaba en estado RESUELTO_REABIERTO, gestionar la resolución
             if (ticketSeleccionado.getEstado().equals(Ticket.EstadoTicket.RESUELTO_REABIERTO)) {
                 usuarioDAO.gestionarResolucionTicketReabierto(ticketSeleccionado.getIdTecnico(), getApplicationContext()); // Llama al método para gestionar la resolución
                 Log.d("FinalizarTicket", "ID del técnico: " + ticketSeleccionado.getIdTecnico());
 
             }
 
-            // Cambiar el estado del ticket a FINALIZADO
             ticketSeleccionado.setEstado(Ticket.EstadoTicket.FINALIZADO);
             ticketDAO.actualizar(ticketSeleccionado);
             Toast.makeText(this, "El ticket ha sido marcado como finalizado", Toast.LENGTH_SHORT).show();

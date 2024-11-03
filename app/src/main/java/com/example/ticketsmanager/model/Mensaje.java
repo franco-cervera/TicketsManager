@@ -6,7 +6,7 @@ public class Mensaje {
     private String asunto;
     private String mensaje;
     private String estado;
-    private String nombreUsuario; // Asegúrate de que el nombre sea correcto
+    private String nombreUsuario;
 
     public Mensaje(int idMensaje, int idTecnico, String asunto, String mensaje, String estado, String nombreUsuario) {
         this.idMensaje = idMensaje;
@@ -14,7 +14,7 @@ public class Mensaje {
         this.asunto = asunto;
         this.mensaje = mensaje;
         this.estado = estado;
-        this.nombreUsuario = nombreUsuario; // Esto debe ser correcto
+        this.nombreUsuario = nombreUsuario;
     }
 
 

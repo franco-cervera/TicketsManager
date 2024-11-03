@@ -1,14 +1,14 @@
 package com.example.ticketsmanager.model;
 
 public class Ticket {
-    protected int id; // ID único para el ticket
+    protected int id;
     protected String titulo;
     protected String descripcion;
     protected int idTrabajador;
     protected int idTecnico;
-    protected boolean reabierto; // Indica si el ticket ha sido reabierto
-    protected int idTecnicoAnterior; // ID del técnico anterior
-    protected EstadoTicket estado; // Usar un enum para los estados
+    protected boolean reabierto;
+    protected int idTecnicoAnterior;
+    protected EstadoTicket estado;
 
     public enum EstadoTicket {
         NO_ATENDIDO,
@@ -53,9 +53,9 @@ public class Ticket {
         this.descripcion = descripcion;
         this.idTrabajador = idTrabajador;
         this.estado = estado;
-        this.idTecnico = idTecnico; // Inicialmente no tiene técnico asignado
-        this.reabierto = false; // Inicialmente no está reabierto
-        this.idTecnicoAnterior = -1; // Inicialmente no tiene técnico anterior
+        this.idTecnico = idTecnico;
+        this.reabierto = false;
+        this.idTecnicoAnterior = -1;
     }
     // Constructor sin id
     public Ticket(String titulo, String descripcion, int idTrabajador, EstadoTicket estado) {
@@ -63,9 +63,9 @@ public class Ticket {
         this.descripcion = descripcion;
         this.idTrabajador = idTrabajador;
         this.estado = estado;
-        this.idTecnico = idTecnico; // Inicialmente no tiene técnico asignado
-        this.reabierto = false; // Inicialmente no está reabierto
-        this.idTecnicoAnterior = -1; // Inicialmente no tiene técnico anterior
+        this.idTecnico = idTecnico;
+        this.reabierto = false;
+        this.idTecnicoAnterior = -1;
     }
 
 

@@ -24,7 +24,7 @@ public class GestionTicketsActivity extends AppCompatActivity {
     private TicketAdapterAdmin ticketAdapter;
     private List<Ticket> ticketList;
     private Button btnReabrirTicket;
-    private Ticket ticketSeleccionado; // Mantiene referencia al ticket seleccionado
+    private Ticket ticketSeleccionado;
     private TicketDAO ticketDAO;
     private UsuarioDAO usuarioDAO;
 
@@ -78,11 +78,9 @@ public class GestionTicketsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Volver a cargar la lista de tickets
             ticketList = ticketDAO.listarTodos();
             ticketAdapter.updateData(ticketList);
         } else if (requestCode == 2 && resultCode == RESULT_OK) {
-            // Al volver de la actualización, recarga la lista de tickets
             ticketList = ticketDAO.listarTodos();
             ticketAdapter.updateData(ticketList);
         }

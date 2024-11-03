@@ -19,7 +19,6 @@ public class MensajeDAO {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // Método para obtener todos los mensajes
     public List<Mensaje> obtenerMensajes() {
         List<Mensaje> mensajes = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -47,7 +46,6 @@ public class MensajeDAO {
     }
 
 
-    // Método para marcar un mensaje como leído
     public void marcarMensajeComoLeido(int idMensaje) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

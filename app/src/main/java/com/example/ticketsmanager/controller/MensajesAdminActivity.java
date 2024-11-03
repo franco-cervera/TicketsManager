@@ -43,7 +43,6 @@ public class MensajesAdminActivity extends AppCompatActivity {
         spinnerAsunto.setAdapter(adapter);
 
 
-        // Configurar el botón para enviar el mensaje
         buttonEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +61,6 @@ public class MensajesAdminActivity extends AppCompatActivity {
             return;
         }
 
-        // Crear un objeto ContentValues para almacenar los datos
         ContentValues values = new ContentValues();
         values.put("id_tecnico", Integer.parseInt(idTecnico));
         values.put("asunto", asunto);
@@ -83,7 +81,7 @@ public class MensajesAdminActivity extends AppCompatActivity {
 
     private void limpiarCampos() {
         edtIDTecnico.setText("");
-        spinnerAsunto.setSelection(0); // Volver a la opción por defecto
+        spinnerAsunto.setSelection(0);
         edtMensaje.setText("");
     }
 }

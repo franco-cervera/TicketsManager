@@ -68,7 +68,7 @@ public class MarcasFallasAdmActivity extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             usuarios = usuarioDAO.listarTecnicos();
-            usuariosAdapter = new MarcasFallasAdapter(usuarios); // Asegúrate de usar el adaptador correcto
+            usuariosAdapter = new MarcasFallasAdapter(usuarios);
             recyclerView.setAdapter(usuariosAdapter);
 
             usuariosAdapter.setOnUsuarioClickListener(usuario -> {

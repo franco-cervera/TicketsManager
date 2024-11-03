@@ -2,12 +2,12 @@ package com.example.ticketsmanager.model;
 
 public class Usuario {
     protected int id;
-    protected String nombreUsuario; // Mantenerlo para el registro
+    protected String nombreUsuario;
     protected String password;
     protected String tipo;
     protected boolean bloqueado;
-    protected int marcas; // Nuevos atributos
-    protected int fallas; // Nuevos atributos
+    protected int marcas;
+    protected int fallas;
 
     // Constructor sin id ni marcas y fallas (para el registro)
     public Usuario(String nombreUsuario, String password, String tipo) {
@@ -15,8 +15,8 @@ public class Usuario {
         this.password = password;
         this.tipo = tipo;
         this.bloqueado = false;
-        this.marcas = 0; // Inicializar a 0
-        this.fallas = 0; // Inicializar a 0
+        this.marcas = 0;
+        this.fallas = 0;
     }
 
     // Constructor con ID
@@ -30,7 +30,6 @@ public class Usuario {
         this.fallas = fallas;
     }
 
-    // Métodos Getters y Setters
     public int getId() {
         return id;
     }

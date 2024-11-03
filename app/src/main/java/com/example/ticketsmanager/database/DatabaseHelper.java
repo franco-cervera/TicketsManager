@@ -80,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS usuarios");
         db.execSQL("DROP TABLE IF EXISTS tickets");
+        db.execSQL("DROP TABLE IF EXISTS mensajes");
         onCreate(db);
     }*/
 
@@ -95,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return password;
         }
 
-        return null; // Usuario no encontrado
+        return null;
     }
 
 

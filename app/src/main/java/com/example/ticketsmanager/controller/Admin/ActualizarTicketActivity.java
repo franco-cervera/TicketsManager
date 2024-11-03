@@ -15,7 +15,7 @@ public class ActualizarTicketActivity extends AppCompatActivity {
 
     private EditText etTitulo, etDescripcion;
     private TicketDAO ticketDAO;
-    private Ticket ticket; // Referencia al ticket seleccionado
+    private Ticket ticket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,21 +27,21 @@ public class ActualizarTicketActivity extends AppCompatActivity {
         Button btnActualizarTicket = findViewById(R.id.btnActualizarTicket);
 
         ticketDAO = new TicketDAO(this);
-        int ticketId = getIntent().getIntExtra("TICKET_ID", -1); // Obtén el ID del ticket a actualizar
+        int ticketId = getIntent().getIntExtra("TICKET_ID", -1);
 
         if (ticketId != -1) {
-            // Carga los datos del ticket para mostrarlos
+
             ticket = ticketDAO.listar(ticketId);
             if (ticket != null) {
                 etTitulo.setText(ticket.getTitulo());
                 etDescripcion.setText(ticket.getDescripcion());
             } else {
                 Toast.makeText(this, "Ticket no encontrado.", Toast.LENGTH_SHORT).show();
-                finish(); // Finaliza si no se encuentra el ticket
+                finish();
             }
         } else {
             Toast.makeText(this, "ID de ticket no válido.", Toast.LENGTH_SHORT).show();
-            finish(); // Finaliza si no se obtiene un ID válido
+            finish();
         }
 
         btnActualizarTicket.setOnClickListener(view -> {
@@ -53,16 +53,14 @@ public class ActualizarTicketActivity extends AppCompatActivity {
                 return;
             }
 
-            // Actualiza los datos del ticket existente
             ticket.setTitulo(titulo);
             ticket.setDescripcion(descripcion);
 
-            // Llamar al método actualizar del DAO
             ticketDAO.actualizar(ticket);
 
             Toast.makeText(ActualizarTicketActivity.this, "Ticket actualizado correctamente.", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK); // Asegurar que el resultado sea "OK"
-            finish(); // Cierra la actividad y vuelve a la anterior
+            setResult(RESULT_OK);
+            finish();
         });
     }
 }

@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main); // Cambiar a activity_main.xml
+        setContentView(R.layout.activity_main);
 
         Button btnTrabajador = findViewById(R.id.btnTrabajador);
         Button btnTecnico = findViewById(R.id.btnTecnico);

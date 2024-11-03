@@ -59,7 +59,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             );
 
             // Recupera el estado de bloqueado y lo establece en el objeto Usuario
-            usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1); // Asegúrate de que aquí se lea el estado correctamente
+            usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1);
 
             cursor.close();
             db.close();
@@ -125,7 +125,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         String query = "SELECT * FROM usuarios WHERE tipo = ? LIMIT 1"; // LIMIT 1 para obtener solo uno
         Cursor cursor = db.rawQuery(query, new String[]{tipo});
 
-        Usuario usuario = null; // Inicializa el usuario a null
+        Usuario usuario = null;
 
         if (cursor != null && cursor.moveToFirst()) {
             usuario = new Usuario(
@@ -139,10 +139,10 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
         }
 
         if (cursor != null) {
-            cursor.close(); // Asegúrate de cerrar el cursor
+            cursor.close();
         }
-        db.close(); // Cierra la base de datos
-        return usuario; // Devuelve el usuario encontrado o null
+        db.close();
+        return usuario;
     }
 
     public List<Usuario> listarTecnicos() {
@@ -165,10 +165,10 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
                 usuario.setBloqueado(cursor.getInt(cursor.getColumnIndexOrThrow("bloqueado")) == 1);
                 tecnicos.add(usuario);
             }
-            cursor.close(); // Asegúrate de cerrar el cursor
+            cursor.close();
         }
-        db.close(); // Cierra la base de datos
-        return tecnicos; // Devuelve la lista de técnicos
+        db.close();
+        return tecnicos;
     }
 
 
@@ -191,7 +191,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             if (bloqueado) {
                 cursor.close();
                 db.close();
-                return new ResultadoValidacion(null, "Tu cuenta está bloqueada debido a 3 fallas."); // Mensaje específico
+                return new ResultadoValidacion(null, "Tu cuenta está bloqueada debido a 3 fallas.");
             }
 
             Usuario usuario = new Usuario(id, cursor.getString(cursor.getColumnIndexOrThrow("nombreUsuario")), pass, tipoUsuario, fallas, marcas);
@@ -199,11 +199,11 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
 
             cursor.close();
             db.close();
-            return new ResultadoValidacion(usuario, null); // Sin mensaje
+            return new ResultadoValidacion(usuario, null);
         } else {
             cursor.close();
             db.close();
-            return new ResultadoValidacion(null, "Usuario, contraseña o tipo incorrectos."); // Mensaje genérico
+            return new ResultadoValidacion(null, "Usuario, contraseña o tipo incorrectos.");
         }
     }
 
@@ -300,7 +300,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer> {
             if ("Administrador".equalsIgnoreCase(tipoUsuario)) {
                 cursor.close();
                 db.close();
-                return; // Salir del método sin hacer nada
+                return;
             }
         }
 

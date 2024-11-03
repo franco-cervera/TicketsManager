@@ -62,7 +62,7 @@ public class GestionTicketTecnicoActivity extends AppCompatActivity {
                         && (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.NO_ATENDIDO
                         || ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO)) {
 
-                    // Cambiar el estado del ticket según su estado actual
+
                     if (ticketSeleccionado.getEstado() == Ticket.EstadoTicket.REABIERTO) {
                         ticketSeleccionado.setEstado(Ticket.EstadoTicket.ATENDIDO_REABIERTO);
                         usuarioDAO.incrementarFallasTecnico(tecnicoId); // Incrementar falla si estaba reabierto

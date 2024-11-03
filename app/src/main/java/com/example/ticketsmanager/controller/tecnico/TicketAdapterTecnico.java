@@ -58,9 +58,8 @@ public class TicketAdapterTecnico extends RecyclerView.Adapter<TicketAdapterTecn
         public void bind(Ticket ticket) {
             tvTitulo.setText(ticket.getTitulo());
             tvEstado.setText(ticket.getEstado().toString());
-            tvDescripcion.setText(ticket.getDescripcion()); // Asignar la descripción
+            tvDescripcion.setText(ticket.getDescripcion());
 
-            // Configurar el clic en el ticket
             itemView.setOnClickListener(v -> {
                 if (onTicketClickListener != null) {
                     onTicketClickListener.onTicketClick(ticket);

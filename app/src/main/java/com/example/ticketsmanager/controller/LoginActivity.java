@@ -100,7 +100,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Limpiar campo pass
         edtPassword.setText("");
     }
 

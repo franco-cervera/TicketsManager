@@ -21,10 +21,9 @@ public class GestionPasswordActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UsuariosAdapter usuariosAdapter;
     private List<Usuario> usuarios;
-    private Usuario usuarioSeleccionado; // Mantén referencia al usuario seleccionado
-    private UsuarioDAO usuarioDAO; // Inicializa el DAO
+    private Usuario usuarioSeleccionado;
+    private UsuarioDAO usuarioDAO;
     private Button btnBlanquearPass;
-    private EditText idUsuario;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -34,7 +33,6 @@ public class GestionPasswordActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewUsuarios);
         btnBlanquearPass = findViewById(R.id.btnBlanquearPassword);
-        idUsuario = findViewById(R.id.edt_idUsuario_BlanqueoPassword);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -51,25 +49,16 @@ public class GestionPasswordActivity extends AppCompatActivity {
         });
 
         btnBlanquearPass.setOnClickListener(view -> {
-            String userIdStr = idUsuario.getText().toString();
-            if (!userIdStr.isEmpty()) {
-                try {
-                    int userId = Integer.parseInt(userIdStr);
-                    Usuario usuario = usuarioDAO.listar(userId);
-                    if (usuario != null) {
-                        dbHelper.blanquearPassword(userId); // Usar el método del DAO
-                        usuarios = usuarioDAO.listarTodos(); // Actualiza la lista después de blanquear
-                        usuariosAdapter.notifyDataSetChanged(); // Notifica al adaptador para refrescar la lista
-                        Toast.makeText(GestionPasswordActivity.this, "Contraseña blanqueada al ID del usuario", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(GestionPasswordActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (NumberFormatException e) {
-                    Toast.makeText(GestionPasswordActivity.this, "Ingrese un ID de usuario válido", Toast.LENGTH_SHORT).show();
-                }
+            if (usuarioSeleccionado != null) {
+                int userId = usuarioSeleccionado.getId();
+                dbHelper.blanquearPassword(userId);
+                usuarios = usuarioDAO.listarTodos();
+                usuariosAdapter.notifyDataSetChanged();
+                Toast.makeText(GestionPasswordActivity.this, "Contraseña blanqueada para el usuario: " + usuarioSeleccionado.getNombreUsuario(), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(GestionPasswordActivity.this, "Ingrese un ID de usuario válido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GestionPasswordActivity.this, "Por favor, selecciona un usuario primero", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }

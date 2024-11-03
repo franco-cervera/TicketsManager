@@ -72,7 +72,6 @@ import java.util.List;
 
                 tvDescripcion.setText(ticket.getDescripcion());
 
-                // Configurar el clic en el elemento
                 itemView.setOnClickListener(v -> {
                     if (onTicketClickListener != null) {
                         onTicketClickListener.onTicketClick(ticket);
