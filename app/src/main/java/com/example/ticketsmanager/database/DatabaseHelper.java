@@ -10,7 +10,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "tickets_manager.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
 
     public DatabaseHelper(Context context) {
@@ -61,28 +61,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 4) {
-            String createMensajesTable = "CREATE TABLE mensajes (" +
-                    "id_mensaje INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "id_tecnico INTEGER NOT NULL," +
-                    "asunto TEXT NOT NULL," +
-                    "mensaje TEXT NOT NULL," +
-                    "estado TEXT NOT NULL CHECK (estado IN ('leído', 'no leído'))," +
-                    "FOREIGN KEY (id_tecnico) REFERENCES usuarios(id)" +
-                    ");";
-            db.execSQL(createMensajesTable);
-        }
-    }
-
-    /*
-    PARA CUANDO TODO ESTE LISTO, INCREMENTAR 1 VERSION A LA BD Y EJECUTAR
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS usuarios");
         db.execSQL("DROP TABLE IF EXISTS tickets");
         db.execSQL("DROP TABLE IF EXISTS mensajes");
         onCreate(db);
-    }*/
+    }
 
 
 
